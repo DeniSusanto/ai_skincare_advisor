@@ -611,6 +611,27 @@ footer p {
   text-align: center;
 }
 
+.modal-image-400{
+  max-width: 400px;
+  margin: 0 auto;
+}
+.modal-image-300{
+  max-width: 300px;
+  margin: 0 auto;
+}
+.modal-image-350{
+  max-width: 350px;
+  margin: 0 auto;
+}
+.modal-image-600{
+  max-width: 600px;
+  margin: 0 auto;
+}
+.modal-image-1000{
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
 .modal-dialog .close:focus {
   outline: none;
 }

@@ -136,7 +136,7 @@
                 </div> <!-- row -->
                 <div class="row">
                     <div class="col-lg-7 col-md-7 wow fadeInLeft">
-                        <h3 class="section-title-2 text-uppercase font-weight-300"><b>How</b> <span class="blue-text">We Do it</span></h3>
+                        <h3 class="section-title-2 text-uppercase font-weight-300"><b>Main</b> <span class="blue-text">Workflow</span></h3>
                         <p class="justify-text" style = "color: black;">
                         Our final product will be in the form of a mobile app. Since a lot of the facial features detection model are 
                         depending on Python libraries, we will utilize a cloud service, such as Heroku or AWS, instead of putting all the 
@@ -146,7 +146,7 @@
                         </p>
                         <br>
                         <div>
-                        <img src="images/workflow_color.png" class="img-responsive" alt="Home">
+                        <img src="images/workflow_color.png" class="img-responsive">
                         </div>
                         <br>
                         <p class="justify-text" style = "color: black;">
@@ -220,6 +220,30 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-11 col-md-11 wow fadeInUp" style = "margin-top: 40px;">
+                        <h3 class="section-title-2 text-uppercase font-weight-300"><b>Recommendation</b> <span class="blue-text">System</span></h3>
+                        <p class="justify-text" style = "color: black;">
+                        To get the skincare product catalogue, we will scrape the Sephora website which provides decent information of 
+                        each product including image, brand, price, rank, skin types compatibility, and the ingredients. In total, we 
+                        estimate more than 1400 skincare products should be scraped. We will also consider scraping the TotalBeauty 
+                        website as an alternative. 
+                        </p>
+                        
+                        <p class="justify-text" style = "color: black;">
+                        For the skincare product recommendation system, we are utilizing the information from the questionnaire and result 
+                        from facial skin analysis. Information like skincare product preference, allergies, skin type, price, areas of 
+                        concern, and the severity of each facial issue will be the main factor in deciding the most suitable skincare product.
+
+                        </p>
+                        <p class="justify-text" style = "color: black;">
+                        In addition, to provide a more personal recommendation system, we are also considering to capture custom user 
+                        inputs that indicates their specific interest in skincare product characteristic, e.g. strawberry, water-resistant. 
+                        We will utilize TF-IDF NLP technique on the product description and cosine similarity metric to determine the top 
+                        recommended product. 
+                        </p>
+                        
+                    </div>
+                    <div class="col-lg-1 col-md-1 wow fadeInLeft"></div>
                     
                 </div>
             </div>
@@ -510,7 +534,7 @@
                                    <h3>Kevin Hung</h3>
                                    <h4>Developer</h4>
                                    <ul class="social-icon">
-                                        <li><a href="https://www.facebook.com/kevhung17" class="fa fa-facebook"></a></li>
+                                        <li><a href="https://www.facebook.com/kevhung17" class="fa fa-plays"></a></li>
                                         <li><a href="https://www.linkedin.com/in/kevhg/" class="fa fa-linkedin"></a></li>
                                    </ul>
                               </div>
@@ -585,7 +609,13 @@
             salon and spa treatments due to changing lifestyles and climate changes have drastically increased the demand for 
             skin care products. This can be illustrated by the fact that the global cosmetics market was valued in 2017 at USD 532 
             billion and this number is expected to reach USD 863 billion by 2024 according to Zion Market Research (2018) 
-            <br><br>
+            <br>
+            </p>
+            <div class ="modal-image-1000">
+                <img src="images/background_modal.png" class="img-responsive">
+            </div>
+            <p style="text-align: justify; color: black;">
+            <br>
             In the beauty industry, it is important to remember that not all products work for 
             all people. We’re all unique with different skin type, skin tone and have different goals that we wish to achieve using 
             beauty products. Most brands currently sell one-size-fits-all products that is believed to magically work on all skin types 
@@ -608,7 +638,6 @@
             formulas. This personalised approach would help alleviate the problem of consumers not being able to figure out what to buy and 
             wasting their money on generic products.
             <br><br>
-            
             </p>
     </div>
      </div>
@@ -653,7 +682,7 @@
 <!-- facial features modal -->
 <div class="modal fade" id="acnemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
      <div class="modal-dialog modal-lg">
-      <div class="modal-content modal-popup">
+      <div class="modal-content modal-popup" style = "background-color: #545cd4;">
           <div class="modal-header">
                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h1 class="modal-title" style="color: black;">Acne</h1>
@@ -666,10 +695,9 @@
           </div>
      </div>
 </div>
-
 <div class="modal fade" id="wrinklemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
      <div class="modal-dialog modal-lg">
-      <div class="modal-content modal-popup">
+      <div class="modal-content modal-popup" style="background-color: #8057db;">
           <div class="modal-header">
                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h1 class="modal-title" style="color: black;">Wrinkles</h1>
@@ -680,13 +708,16 @@
             Chellappa (2014). Fortunately, Gabor filter is supported in OpenCV library. Another alternative is to use Hessian filter as 
             suggested in a research paper 
             titled Wrinkle Detection Using Hessian Line Tracking by Ng, Yap, Costen, and Li (2015).
+            <div class ="modal-image-350">
+                <img src="images/wrinkle_modal.png" class="img-responsive">
+            </div>
             </p>
           </div>
      </div>
 </div>
 <div class="modal fade" id="skinagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
      <div class="modal-dialog modal-lg">
-      <div class="modal-content modal-popup">
+      <div class="modal-content modal-popup" style="background-color: #5cacd0;">
           <div class="modal-header">
                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h1 class="modal-title" style="color: black;">Skin Age</h1>
@@ -696,13 +727,16 @@
             (CNN) approach. There exists some existing implementation of Fast-AAM. However, a research paper by Padme and Desai (2015) suggests 
             that AAM and some other older literature are relying on a controlled facial images which might not be suitable for mobile selfie. 
             If that’s the case, then a pretrained CNN model trained using IMDB database will be used.
+            <div class ="modal-image-400">
+                <img src="images/skinage_modal.png" class="img-responsive">
+            </div>
             </p>
           </div>
      </div>
 </div>
 <div class="modal fade" id="sallownessmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
      <div class="modal-dialog modal-lg">
-      <div class="modal-content modal-popup">
+      <div class="modal-content modal-popup" style = "background-color: #545cd4;">
           <div class="modal-header">
                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h1 class="modal-title" style="color: black;">Sallowness</h1>
@@ -716,7 +750,7 @@
 </div>
 <div class="modal fade" id="crowmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
      <div class="modal-dialog modal-lg">
-      <div class="modal-content modal-popup">
+      <div class="modal-content modal-popup" style="background-color: #8057db;">
           <div class="modal-header">
                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h1 class="modal-title" style="color: black;">Crow's Feet</h1>
@@ -730,7 +764,7 @@
 </div>
 <div class="modal fade" id="skintonemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
      <div class="modal-dialog modal-lg">
-      <div class="modal-content modal-popup">
+      <div class="modal-content modal-popup" style="background-color: #5cacd0;">
           <div class="modal-header">
                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h1 class="modal-title" style="color: black;">Skin Tone</h1>
@@ -740,13 +774,16 @@
             The first method is the use of HSV and YCrCb colour spaces to determine the user skin tone. Another method is to use k-means 
             clustering algorithm with the support of OpenCV library to detect skin tone, as suggested by Jalangan (2018) in one of his 
             articles. The skin tone information can be useful to measure the severity of dark-eye circle and eyebags.
+            <div class ="modal-image-600">
+                <img src="images/skintone_modal.png" class="img-responsive">
+            </div>
             </p>
           </div>
      </div>
 </div>
 <div class="modal fade" id="darkeyemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
      <div class="modal-dialog modal-lg">
-      <div class="modal-content modal-popup">
+      <div class="modal-content modal-popup" style = "background-color: #545cd4;">
           <div class="modal-header">
                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h1 class="modal-title" style="color: black;">Dark-eye Circle</h1>
