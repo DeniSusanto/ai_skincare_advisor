@@ -1,0 +1,62 @@
+/* 
+
+Tinker Template
+
+http://www.templatemo.com/tm-506-tinker
+
+*/
+
+
+#intro {
+	padding: 150px 0px;
+	background-image: url(../images/about-bg.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+#intro .service-item {
+	text-align: center;
+}
+
+#intro .service-item .icon {
+	width: 110px;
+	height: 110px;
+	display: inline-block;
+	text-align: center;
+	line-height: 104px;
+	border: 3px solid #fff;
+	border-radius: 50%;
+	background-color: #f7c552;
+}
+
+#intro .service-item h4 {
+	margin-bottom: 30px;
+	margin-top: 45px;
+	font-size: 17px;
+	font-weight: 500;
+	color: #fff;
+	letter-spacing: 1px;
+}
+
+#intro .service-item .line-dec {
+	width: 100%;
+	height: 1px;
+	background-color: rgba(250, 250, 250, 0.5);
+}
+
+#intro .service-item p {
+	color: #fff;
+	margin-top: 30px;
+	height: 15vh;
+}
+
+#intro .service-item .primary-blue-button {
+	margin-top: 35px;
+}
+
+@media (max-width: 991px){
+	#intro .service-item {
+		margin-bottom: 80px;
+	} 
+}
