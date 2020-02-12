@@ -1,0 +1,39 @@
+1. Dark eye circle:
+Output in decimal value
+0 - Clear
+1 - Mild
+2 - Bad
+
+2. Crow's feet:
+Output in decimal value
+0 - Clear
+1 - Almost clear
+2 - Moderate
+3 - Bad
+4 - Severe
+
+3. Wrinkles:
+Output in decimal value
+0 - Clear
+1 - Almost clear
+2 - Moderate
+3 - Bad
+4 - Severe
+Note: For scoring wrinkles, besides the overall score, we can get score of wrinkles for 7 part of 
+human face that usually have wrinkles, i.e. right-left below eyes, right-left nasal lines, right-left 
+crow's feet, and forehead. Just in case, u need it on recomm system, each will have decimal value score the same as above.
+
+4. Acne:
+Output in decimal value
+0 - clear
+1 - almost clear
+2 - Mild 
+3 - Moderate
+4 - Severe
+Note: the score is different from previous acne detection implementation, they have been shifted down, i.e. before, 1 was clear and so on.
+
+5. Sallowness:
+Output in decimal value
+0 - No sallowness
+1 - Mild
+2 - Bad
