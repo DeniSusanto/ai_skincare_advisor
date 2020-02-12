@@ -1,3 +1,5 @@
+Note: Clear > Almost clear > Mild > Moderate > Bad > Severe
+
 1. Dark eye circle:
 Output in decimal value
 0 - Clear
