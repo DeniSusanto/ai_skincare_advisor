@@ -8,17 +8,18 @@ import imutils
 from imutils import face_utils
 import cv2
 import numpy as np
+import config
 
-PREDICTOR_PATH = "shape_predictor_68_face_landmarks.dat"
-WIDTH_RESIZE = 500
+F_L_PREDICTOR_PATH = config.F_L_PREDICTOR_PATH
+FL_WIDTH_RESIZE = config.FL_WIDTH_RESIZE
 
 class FacialLandmark():
     def __init__(self, image):
         detector = dlib.get_frontal_face_detector()
-        predictor = dlib.shape_predictor(PREDICTOR_PATH)
+        predictor = dlib.shape_predictor(F_L_PREDICTOR_PATH)
         
         (ori_height, ori_width) = image.shape[:2]
-        resized_image = imutils.resize(image, width=WIDTH_RESIZE)
+        resized_image = imutils.resize(image, width=FL_WIDTH_RESIZE)
         (trans_height, trans_width) = resized_image.shape[:2]
         
         ratio_x = ori_width/trans_width
@@ -36,10 +37,10 @@ class FacialLandmark():
         self.image = image
         self.resized_image = resized_image
         self.landmark = adjusted_landmark
-        self.bb_x = int(round(x * ratio_x))
-        self.bb_y = int(round(y * ratio_y))
-        self.bb_w = int(round((x + w) * ratio_x))
-        self.bb_h = int(round((y + h) * ratio_y))
+        self.bb_x1 = int(round(x * ratio_x))
+        self.bb_y1 = int(round(y * ratio_y))
+        self.bb_x2 = int(round((x + w) * ratio_x))
+        self.bb_y2 = int(round((y + h) * ratio_y))
     
     def _returnImage(self, x1, x2, y1, y2, highLight):
         if not highLight:
@@ -117,4 +118,47 @@ class FacialLandmark():
         l_y2 = self.landmark[54][1] - l_lips
         
         return (self._returnImage(r_x1, r_x2, r_y1, r_y2, highlight), self._returnImage(l_x1, l_x2, l_y1, l_y2, highlight))
+    
+    def get_chin_region(self, highlight = False):
+        chin_x_min = self.landmark[39][0]
+        chin_x_max = self.landmark[42][0]
+        mouse_landmarks = self.landmark[list(range(48, 61)),:]
+        chin_y_min = np.max(np.array(mouse_landmarks[:,1]))
+        chin_y_max = int(np.asarray(max(self.landmark[:,1]).flatten()[0]))
+        
+        h = chin_y_max - chin_y_min
+        x1 = chin_x_min
+        x2 = chin_x_max
+        y1 = chin_y_min + int(0.05 * h)
+        y2 = chin_y_max - int(0.10 * h)
+        return self._returnImage(x1, x2, y1, y2, highlight)
+    
+    def get_cheeks_region(self, highlight = False):
+        face_x_min = int(max(0, np.asarray(min(self.landmark[:,0])).flatten()[0]))
+        face_x_max = int(np.asarray(max(self.landmark[:,0])).flatten()[0])
+        face_y_min = int((min(self.landmark[:,1]).flatten()[0]))
+        face_y_max = int(np.asarray(max(self.landmark[:,1]).flatten()[0]))
+        
+        r_cheek_min_x = int(face_x_min + 0.05 * (self.landmark[39][0] - face_x_min))
+        r_cheek_max_x = max(self.landmark[39][0], self.landmark[31][0])
+        l_cheek_min_x = min(self.landmark[42][0], self.landmark[35][0])
+        l_cheek_max_x = int(face_x_max - 0.05 * (face_x_max - self.landmark[42][0]))
+        
+        r_eye_landmarks = self.landmark[list(range(36, 42)),:]
+        l_eye_landmarks = self.landmark[list(range(42, 48)),:]
+        
+        r_cheek_min_y = int(max(r_eye_landmarks[:,1]) + 0.2 * (max(r_eye_landmarks[:,1]) - min(r_eye_landmarks[:,1])))
+        r_cheek_max_y = int(face_y_max - 0.1 * (face_y_max - max(r_eye_landmarks[:,1])))
+        l_cheek_min_y = int(max(l_eye_landmarks[:,1]) + 0.2 * (max(l_eye_landmarks[:,1])  - min(l_eye_landmarks[:,1])))
+        l_cheek_max_y = int(face_y_max - 0.1 * (face_y_max - max(l_eye_landmarks[:,1])))
+        
+        r_w = r_cheek_max_x - r_cheek_min_x
+        l_w = l_cheek_max_x - l_cheek_min_x
+        r_cheek_min_x = r_cheek_min_x + int(0.025 * r_w)
+        r_cheek_max_x = r_cheek_max_x - int(0.1 * r_w)
+        l_cheek_min_x = l_cheek_min_x + int(0.1 * l_w)
+        l_cheek_max_x = l_cheek_max_x - int(0.025 * l_w)
+        
+        return (self._returnImage(r_cheek_min_x, r_cheek_max_x, r_cheek_min_y, r_cheek_max_y, highlight), 
+                self._returnImage(l_cheek_min_x, l_cheek_max_x, l_cheek_min_y, l_cheek_max_y, highlight))
         

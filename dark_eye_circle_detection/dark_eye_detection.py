@@ -4,14 +4,13 @@ import numpy as np
 from skin_tone_estimator import get_skin_tone_RGB
 from sklearn.linear_model import LinearRegression
 import imutils
+import config
 
-WIDTH_RESCALE = 500
-
-H_SPLIT_COEFF = 4
-W_SPLIT_COEFF = 6
-N_TOP_SELECT = int(round((H_SPLIT_COEFF * W_SPLIT_COEFF)/3))
-
-MODEL_PATH = "dark_eye_detection_model.pickle"
+D_E_WIDTH_RESCALE = config.D_E_WIDTH_RESCALE
+H_SPLIT_COEFF = config.H_SPLIT_COEFF
+W_SPLIT_COEFF = config.W_SPLIT_COEFF
+N_TOP_SELECT = config.N_TOP_SELECT
+D_E_MODEL_PATH = config.D_E_MODEL_PATH
 
 def split(x, n): 
     split = []
@@ -38,7 +37,7 @@ class DarkEyeDetector():
     def __init__(self, facial_landmark):
         self.facial_landmark = facial_landmark
         self.image = facial_landmark.image
-        with open(MODEL_PATH, 'rb') as f:
+        with open(D_E_MODEL_PATH, 'rb') as f:
             self.score_model = pickle.load(f)
     
     #[[RGB_sum, r, g, b]]
@@ -78,10 +77,11 @@ class DarkEyeDetector():
     def get_skin_tone(self):
         #utilizes forehead region for getting overall face color
         forehead_region = self.facial_landmark.get_forehead_region()
-        forehead_region = imutils.resize(forehead_region, width = WIDTH_RESCALE)
+        forehead_region = imutils.resize(forehead_region, width = D_E_WIDTH_RESCALE)
         skin_tone = get_skin_tone_RGB(forehead_region)
         return skin_tone
-
+    
+    #return right and left tone in RGB
     def get_dark_eyes(self, darkest_only = False):
         below_eyes_r, below_eyes_l = self.facial_landmark.get_below_eyes_region()
         r_tone = self._calculate_adjusted_dark_tone(below_eyes_r)
