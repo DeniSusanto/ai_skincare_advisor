@@ -62,3 +62,28 @@ FH_WEIGHT = 0.45
 BE_WEIGHT = 0.10
 CF_WEIGHT = 0.20
 NL_WEIGHT = 0.25
+
+#RECOMMENDATION SYSTEM
+FACIAL_ISSUES_KEYS = ['acne', 'wrinkles', 'crows_feet', 'dark_eye', 'sallowness', 'dryness']
+AVAILABLE_CONCERNS = ['dryness', 'wrinkles', 'oiliness', 'dullness', 'dark_spots', 'pores', 'redness', 'acne', 'uneven_skin_tone', 'sallowness']
+PRODUCT_CATALOGUE_PATH = "product_catalogue.csv"
+RECOMMENDATION_THRESHOLD = {
+    'acne' : 2.5, 
+    'wrinkles' : 2.5, 
+    'crows_feet' : 2.5, 
+    'dark_eye' : 1.2, 
+    'sallowness' : 1.6
+}
+RECOMMENDATION_PRODUCT_MAPPING = {
+    'acne' : 'Cleanser',
+    'wrinkles' : 'Treatment', 
+    'crows_feet' : 'Treatment', 
+    'dark_eye' : 'Eye cream', 
+    'sallowness' : 'Face Mask',
+    'dryness' : 'Moisturizer'
+}
+
+RS_PRICE_WEIGHT = 0.2
+RS_RATINGS_WEIGHT = 0.25
+RS_LIKES_WEIGHT = 0.35
+RS_PREFERENCES_WEIGHT = 0.2
