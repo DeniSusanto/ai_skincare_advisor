@@ -67,7 +67,7 @@ class AcneDetector():
         return self._fh_score
     
     def get_chin_score(self):
-        return ch_score
+        return self._ch_score
     
     #return (right cheek score, left cheek score) tuple
     def get_cheeks_score(self):

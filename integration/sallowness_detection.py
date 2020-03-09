@@ -1,5 +1,5 @@
 def get_sallowness_score(real_age, predicted_age):
-    if real_age <= predicted_age:
+    if predicted_age <= real_age:
         return 0
     else:
         diff = predicted_age - real_age

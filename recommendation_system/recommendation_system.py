@@ -76,66 +76,69 @@ class ProductRecommendation():
     def optional_filtered_catalogue(self, catalogue_df, filter_dict):
         bool_filter = np.ones(catalogue_df.shape[0], dtype=bool)
         for (k, v) in filter_dict.items():
-            if k == "price":
-                bool_filter = bool_filter & (catalogue_df["price"] <= v)
-            if k == "concern":
-                bool_filter = bool_filter & (catalogue_df[v] == 1)
-            if k == "label":
-                bool_filter = bool_filter & (catalogue_df["Label"] == v)
+            if v != None:
+                if k == "price":
+                    bool_filter = bool_filter & (catalogue_df["price"] <= v)
+                if k == "concern":
+                    bool_filter = bool_filter & (catalogue_df[v] == 1)
+                if k == "label":
+                    bool_filter = bool_filter & (catalogue_df["Label"] == v)
         return catalogue_df[bool_filter].reset_index(drop = True).copy()
     
     def sort_recommended_products(self, catalogue_df):
         values=[]
-        for i in range(len(catalogue_df)):
+        if self.input['preferences']:
             X=" ".join(self.input['preferences'])
-            Y=catalogue_df['description'].iloc[i]
-            X_list=[]
-            Y_list=[]
-            X_list = word_tokenize(X)  
-            Y_list = word_tokenize(Y)
-            sw = stopwords.words('english')  
-            l1 =[]
-            l2 =[] 
+            for i in range(len(catalogue_df)):
+                Y=catalogue_df['description'].iloc[i]
+                X_list=[]
+                Y_list=[]
+                X_list = word_tokenize(X)  
+                Y_list = word_tokenize(Y)
+                sw = stopwords.words('english')  
+                l1 =[]
+                l2 =[] 
 
-            X_set={}
-            Y_set={}
-            X_set = {w for w in X_list if not w in sw}  
-            Y_set = {w for w in Y_list if not w in sw} 
-            rvector=[]
-            rvector = X_set.union(Y_set)  
+                X_set={}
+                Y_set={}
+                X_set = {w for w in X_list if not w in sw}  
+                Y_set = {w for w in Y_list if not w in sw} 
+                rvector=[]
+                rvector = X_set.union(Y_set)  
 
-            for w in rvector: 
-                if w in X_set: l1.append(1) # create a vector 
-                else: l1.append(0) 
-                if w in Y_set: l2.append(1) 
-                else: l2.append(0) 
-            c = 0
-            for i in range(len(rvector)): 
-                c+= l1[i]*l2[i] 
-            try:
-                cosine = c / float((sum(l1)*sum(l2))**0.5)
-            except:
-                cosine = 0
-            values.append(cosine)
-            
-        new_filtered = catalogue_df.assign(cosine=values)
-        ratings = new_filtered["rating"].tolist()
-        prices = new_filtered["price"].tolist()
-        cosines = new_filtered["cosine"].tolist()
-        likes = new_filtered["likes"].tolist()
-        
-        max_price = new_filtered["price"].max()
-        max_rating = new_filtered["rating"].max()
-        max_likes = new_filtered["likes"].max()
-        scores=[]
-        for i in range(len(catalogue_df)):
-            score= RS_PRICE_WEIGHT * (max_price-prices[i])/max_price + RS_RATINGS_WEIGHT * ratings[i]/max_rating + \
-            RS_LIKES_WEIGHT * likes[i]/max_likes + RS_PREFERENCES_WEIGHT * cosines[i]
-            scores.append(score)
+                for w in rvector: 
+                    if w in X_set: l1.append(1) # create a vector 
+                    else: l1.append(0) 
+                    if w in Y_set: l2.append(1) 
+                    else: l2.append(0) 
+                c = 0
+                for i in range(len(rvector)): 
+                    c+= l1[i]*l2[i] 
+                try:
+                    cosine = c / float((sum(l1)*sum(l2))**0.5)
+                except:
+                    cosine = 0
+                values.append(cosine)
 
-        catalogue_df["scores"]=scores
-        sorted_catalogue = catalogue_df.sort_values(by = ["scores"], ascending = False).reset_index(drop = True).copy()
-        return sorted_catalogue
+            new_filtered = catalogue_df.assign(cosine=values)
+            ratings = new_filtered["rating"].tolist()
+            prices = new_filtered["price"].tolist()
+            cosines = new_filtered["cosine"].tolist()
+            likes = new_filtered["likes"].tolist()
+
+            max_price = new_filtered["price"].max()
+            max_rating = new_filtered["rating"].max()
+            max_likes = new_filtered["likes"].max()
+            scores=[]
+            for i in range(len(catalogue_df)):
+                score= RS_PRICE_WEIGHT * (max_price-prices[i])/max_price + RS_RATINGS_WEIGHT * ratings[i]/max_rating + \
+                RS_LIKES_WEIGHT * likes[i]/max_likes + RS_PREFERENCES_WEIGHT * cosines[i]
+                scores.append(score)
+
+            catalogue_df["scores"]=scores
+            sorted_catalogue = catalogue_df.sort_values(by = ["scores"], ascending = False).reset_index(drop = True).copy()
+            return sorted_catalogue
+        return catalogue_df
     
     #Will mainly call this. Will return a bunch of recommendations based on products
     def get_default_recommendation(self):
@@ -143,15 +146,18 @@ class ProductRecommendation():
         
         recommendation = {}
         for issue in self.issues:
-            label = RECOMMENDATION_PRODUCT_MAPPING[issue]
-            price = self.input['price']
-            filter_dict = {
-                'price' : price,
-                'label' : label
-            }
-            specific_filtered = self.optional_filtered_catalogue(main_filtered, filter_dict)
-            sorted_specific_filtered = self.sort_recommended_products(specific_filtered)
-            recommendation[issue] = sorted_specific_filtered
+            labels = RECOMMENDATION_PRODUCT_MAPPING[issue]
+            products_dir = {}
+            for label in labels:
+                price = self.input['price']
+                filter_dict = {
+                    'price' : price,
+                    'label' : label
+                }
+                specific_filtered = self.optional_filtered_catalogue(main_filtered, filter_dict)
+                sorted_specific_filtered = self.sort_recommended_products(specific_filtered)
+                products_dir[label] = sorted_specific_filtered
+            recommendation[issue] = products_dir
             
         for concern in self.concerns:
             price = self.input['price']
