@@ -9,7 +9,7 @@ export default function CatalogueList(props) {
   const issue = props.issue;
   const image = props.image;
   const price = parseInt(props.price);
-  const rating = parseInt(props.rating);
+  const rating = parseFloat(props.rating);
   const likes = parseInt(props.likes);
   const description = props.description;
 
@@ -93,24 +93,26 @@ export default function CatalogueList(props) {
           </View>
         </View>
       </View>
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <ScrollView
+      {!props.noDescription && (
+        <View
           style={{
-            width: "90%",
-            height: 120,
-            backgroundColor: "white",
-            paddingLeft: 10,
-            paddingRight: 10,
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <Text>{description}</Text>
-        </ScrollView>
-      </View>
+          <ScrollView
+            style={{
+              width: "90%",
+              height: 120,
+              backgroundColor: "white",
+              paddingLeft: 10,
+              paddingRight: 10,
+            }}
+          >
+            <Text>{description}</Text>
+          </ScrollView>
+        </View>
+      )}
     </View>
   );
 }

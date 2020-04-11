@@ -5,19 +5,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import ReportScreen from "./Screens/ReportScreen";
 import InputImage from "./Screens/InputImage";
 import Recommendation from "./Screens/Recommendation";
-
-function SelfieImage({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Pick Picture</Text>
-      <Button
-        title="Take picture"
-        onPress={() => navigation.navigate("Take Image")}
-      />
-      <Button title="Report" onPress={() => navigation.navigate("Report")} />
-    </View>
-  );
-}
+import Questionnaire from "./Screens/QuestionnaireScreen";
+import LandingScreen from "./Screens/LandingScreen";
+import ConfirmImage from "./Screens/ConfirmImage";
 
 const Stack = createStackNavigator();
 
@@ -25,8 +15,29 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Selfie Image" component={SelfieImage} />
-        <Stack.Screen name="Take Image" component={InputImage} />
+        <Stack.Screen
+          name="Home"
+          component={LandingScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Questionnaire"
+          component={Questionnaire}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Take Image"
+          component={InputImage}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="Confirm Selfie" component={ConfirmImage} />
+
         <Stack.Screen
           name="Report"
           component={ReportScreen}

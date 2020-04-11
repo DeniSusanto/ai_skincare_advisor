@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "AISkincareAdvisor",
+    "name": "AI Skincare Advisor",
     "slug": "AISkincareAdvisor",
     "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
@@ -16,7 +16,13 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.otsoware.aiskincareadvisor",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.otsoware.aiskincareadvisor",
+      "versionCode": 1
     }
   }
 }

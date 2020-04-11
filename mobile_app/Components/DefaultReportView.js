@@ -49,7 +49,7 @@ function MenuIcon({ name, navigate, size }) {
     <Button
       icon={<Icon name={name} color="#fff" size={size} />}
       buttonStyle={{
-        backgroundColor: Color.primary,
+        backgroundColor: "transparent",
       }}
       onPress={navigate}
     />

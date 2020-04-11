@@ -12,14 +12,6 @@ import Wrinkles from "../Components/WrinklesReport";
 import CrowsFeet from "../Components/CrowsFeet";
 import DarkEyeCircle from "../Components/DarkEyeCircleReport";
 
-function Notifications() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Notifications Screen</Text>
-    </View>
-  );
-}
-
 function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>
