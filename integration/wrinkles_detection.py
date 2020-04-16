@@ -185,3 +185,11 @@ class WrinklesDetector():
         if round_score:
             return int(round(score))
         return score
+    
+    def complete_init(self):
+        self.fh_image, self.fh_score = self.get_forehead()        
+        (self.r_cf_image, self.r_cf_score), (self.l_cf_image, self.l_cf_score), self.cf_score = self.get_crows_feet()
+        (self.r_be_image, self.r_be_score), (self.l_be_image, self.l_be_score), self.be_score = self.get_below_eyes()
+        (self.r_nl_image, self.r_nl_score), (self.l_nl_image, self.l_nl_score), self.nl_score = self.get_nasal_lines()
+        self.overall_score = FH_WEIGHT * self.fh_score + CF_WEIGHT * self.cf_score + BE_WEIGHT * self.be_score + NL_WEIGHT * self.nl_score
+        

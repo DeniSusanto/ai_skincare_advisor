@@ -1,3 +1,8 @@
+__author__ = 'Deni Susanto'
+__copyright__ = 'Copyright 2020, AI Facial Skincare Advisor'
+__credits__ = ['Dr. Carmen L.', 'Subhayan R.', 'Kevin H.', 'Mohammad A.']
+__email__ = 'densus@hku.hk'
+
 import numpy as np
 import cv2
 import os

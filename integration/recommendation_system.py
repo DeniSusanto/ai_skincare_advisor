@@ -49,7 +49,11 @@ class ProductRecommendation():
 # }
         
     def __init__(self, catalogue_df, main_input):
-        self.input = main_input 
+        self.input = main_input
+        if self.input['price']:
+            self.input['price'] = float(self.input['price'])
+        else:
+            self.input['price'] = float("inf")
         self.product_catalogue_df = catalogue_df
         self.concerns = []
         self.issues = []
@@ -57,12 +61,13 @@ class ProductRecommendation():
             if k in RECOMMENDATION_THRESHOLD:
                 if v >= RECOMMENDATION_THRESHOLD[k]:
                     self.issues.append(k)
-        for concern in main_input['concerns']:
-            if (concern in FACIAL_ISSUES_KEYS):
-                if (concern not in self.issues):
-                    self.issues.append(concern)
-            else:
-                self.concerns.append(concern)
+        if main_input['concerns']:
+            for concern in main_input['concerns']:
+                if (concern in FACIAL_ISSUES_KEYS):
+                    if (concern not in self.issues):
+                        self.issues.append(concern)
+                else:
+                    self.concerns.append(concern)
                 
    
     def _global_filtered_catalogue(self):
@@ -87,6 +92,14 @@ class ProductRecommendation():
     
     def sort_recommended_products(self, catalogue_df):
         values=[]
+        ratings = catalogue_df["rating"].tolist()
+        prices = catalogue_df["price"].tolist()
+        likes = catalogue_df["likes"].tolist()
+
+        max_price = catalogue_df["price"].max()
+        max_rating = catalogue_df["rating"].max()
+        max_likes = catalogue_df["likes"].max()
+        scores=[]
         if self.input['preferences']:
             X=" ".join(self.input['preferences'])
             for i in range(len(catalogue_df)):
@@ -119,26 +132,23 @@ class ProductRecommendation():
                 except:
                     cosine = 0
                 values.append(cosine)
-
             new_filtered = catalogue_df.assign(cosine=values)
-            ratings = new_filtered["rating"].tolist()
-            prices = new_filtered["price"].tolist()
             cosines = new_filtered["cosine"].tolist()
-            likes = new_filtered["likes"].tolist()
-
-            max_price = new_filtered["price"].max()
-            max_rating = new_filtered["rating"].max()
-            max_likes = new_filtered["likes"].max()
-            scores=[]
             for i in range(len(catalogue_df)):
                 score= RS_PRICE_WEIGHT * (max_price-prices[i])/max_price + RS_RATINGS_WEIGHT * ratings[i]/max_rating + \
                 RS_LIKES_WEIGHT * likes[i]/max_likes + RS_PREFERENCES_WEIGHT * cosines[i]
                 scores.append(score)
+        else:
+            for i in range(len(catalogue_df)):
+                score= RS_PRICE_WEIGHT * (max_price-prices[i])/max_price + RS_RATINGS_WEIGHT * ratings[i]/max_rating + \
+                RS_LIKES_WEIGHT * likes[i]/max_likes + RS_PREFERENCES_WEIGHT * 1
+                scores.append(score)
+            
+            
 
-            catalogue_df["scores"]=scores
-            sorted_catalogue = catalogue_df.sort_values(by = ["scores"], ascending = False).reset_index(drop = True).copy()
-            return sorted_catalogue
-        return catalogue_df
+        catalogue_df["scores"]=scores
+        sorted_catalogue = catalogue_df.sort_values(by = ["scores"], ascending = False).reset_index(drop = True).copy()
+        return sorted_catalogue
     
     #Will mainly call this. Will return a bunch of recommendations based on products
     def get_default_recommendation(self):
@@ -168,5 +178,8 @@ class ProductRecommendation():
             specific_filtered = self.optional_filtered_catalogue(main_filtered, filter_dict)
             sorted_specific_filtered = self.sort_recommended_products(specific_filtered)
             recommendation[concern] = sorted_specific_filtered
+            
+        recommendation["all_products"] = self.sort_recommended_products(self.optional_filtered_catalogue(main_filtered, {
+                'price' : self.input['price']}))
         
         return recommendation

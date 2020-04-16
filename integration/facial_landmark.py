@@ -1,6 +1,6 @@
 __author__ = 'Deni Susanto'
 __copyright__ = 'Copyright 2020, AI Facial Skincare Advisor'
-__credits__ = ['Dr. Carmen L.', 'Dr. Adrian R.', 'Subhayan R.', 'Kevin H.', 'Mohammad A.']
+__credits__ = ['Dr. Carmen L.', 'Subhayan R.', 'Kevin H.', 'Mohammad A.']
 __email__ = 'densus@hku.hk'
 
 import dlib
@@ -50,7 +50,7 @@ class FacialLandmark():
             cv2.rectangle(img_copy, (x1, y1), (x2, y2), (0, 255, 0), 1)
             return img_copy
     
-    def get_below_eyes_region(self, highlight = False):
+    def get_below_eyes_region(self, highlight = False, coor = False):
         right_eye_h = round(1.2*(self.landmark[41][1] - self.landmark[37][1]))
         left_eye_h = round(1.2*(self.landmark[46][1] - self.landmark[44][1]))
         right_eye_lp = int(max(self.landmark[41][1], self.landmark[40][1]) + 0.5 * right_eye_h)
@@ -66,9 +66,12 @@ class FacialLandmark():
         l_y1 = left_eye_lp
         l_y2 = left_eye_lp + int(1.2 * left_eye_h)
         
+        if coor:
+            return ((self._returnImage(r_x1, r_x2, r_y1, r_y2, highlight), (r_x1, r_x2, r_y1, r_y2) ), (self._returnImage(l_x1, l_x2, l_y1, l_y2, highlight), (l_x1, l_x2, l_y1, l_y2)))
+        
         return (self._returnImage(r_x1, r_x2, r_y1, r_y2, highlight), self._returnImage(l_x1, l_x2, l_y1, l_y2, highlight))
     
-    def get_crows_feet_region(self, highlight = False):
+    def get_crows_feet_region(self, highlight = False, coor = False):
         right_cf_w = self.landmark[36][0] - self.landmark[0][0]
         left_cf_w = self.landmark[16][0] - self.landmark[45][0]
         right_cf_h = self.landmark[36][1] - self.landmark[17][1]
@@ -87,9 +90,12 @@ class FacialLandmark():
         l_y1 = self.landmark[45][1] - r_h_portion
         l_y2 = self.landmark[45][1] + round(1.5*r_h_portion)
         
+        if coor:
+            return ((self._returnImage(r_x1, r_x2, r_y1, r_y2, highlight), (r_x1, r_x2, r_y1, r_y2) ), (self._returnImage(l_x1, l_x2, l_y1, l_y2, highlight), (l_x1, l_x2, l_y1, l_y2)))
+        
         return (self._returnImage(r_x1, r_x2, r_y1, r_y2, highlight), self._returnImage(l_x1, l_x2, l_y1, l_y2, highlight))
     
-    def get_forehead_region(self, highlight = False):
+    def get_forehead_region(self, highlight = False, coor = False):
         face_y_min = int((min(self.landmark[:,1]).flatten()[0]))
         face_y_max = int(np.asarray(max(self.landmark[:,1]).flatten()[0]))
         face_height = face_y_max - face_y_min 
@@ -100,9 +106,12 @@ class FacialLandmark():
         y1 = face_y_min - forehead_height
         y2 = face_y_min
         
+        if coor:
+            return (self._returnImage(x1, x2, y1, y2, highlight), (x1, x2, y1, y2))
+            
         return self._returnImage(x1, x2, y1, y2, highlight)
     
-    def get_nasal_junction_region(self, highlight = False):
+    def get_nasal_junction_region(self, highlight = False, coor = False):
         r_lips = self.landmark[61][1] - self.landmark[50][1]
         r_nose_alare = self.landmark[33][0] - self.landmark[31][0]
         r_x1 = self.landmark[36][0]
@@ -117,9 +126,12 @@ class FacialLandmark():
         l_y1 = self.landmark[30][1]
         l_y2 = self.landmark[54][1] - l_lips
         
+        if coor:
+            return ((self._returnImage(r_x1, r_x2, r_y1, r_y2, highlight), (r_x1, r_x2, r_y1, r_y2) ), (self._returnImage(l_x1, l_x2, l_y1, l_y2, highlight), (l_x1, l_x2, l_y1, l_y2)))
+        
         return (self._returnImage(r_x1, r_x2, r_y1, r_y2, highlight), self._returnImage(l_x1, l_x2, l_y1, l_y2, highlight))
     
-    def get_chin_region(self, highlight = False):
+    def get_chin_region(self, highlight = False, coor = False):
         chin_x_min = self.landmark[39][0]
         chin_x_max = self.landmark[42][0]
         mouse_landmarks = self.landmark[list(range(48, 61)),:]
@@ -131,9 +143,13 @@ class FacialLandmark():
         x2 = chin_x_max
         y1 = chin_y_min + int(0.05 * h)
         y2 = chin_y_max - int(0.10 * h)
+        
+        if coor:
+            return (self._returnImage(x1, x2, y1, y2, highlight), (x1, x2, y1, y2))
+        
         return self._returnImage(x1, x2, y1, y2, highlight)
     
-    def get_cheeks_region(self, highlight = False):
+    def get_cheeks_region(self, highlight = False, coor = False):
         face_x_min = int(max(0, np.asarray(min(self.landmark[:,0])).flatten()[0]))
         face_x_max = int(np.asarray(max(self.landmark[:,0])).flatten()[0])
         face_y_min = int((min(self.landmark[:,1]).flatten()[0]))
@@ -158,6 +174,9 @@ class FacialLandmark():
         r_cheek_max_x = r_cheek_max_x - int(0.1 * r_w)
         l_cheek_min_x = l_cheek_min_x + int(0.1 * l_w)
         l_cheek_max_x = l_cheek_max_x - int(0.025 * l_w)
+        
+        if coor:
+            return ((self._returnImage(r_cheek_min_x, r_cheek_max_x, r_cheek_min_y, r_cheek_max_y, highlight), (r_cheek_min_x, r_cheek_max_x, r_cheek_min_y, r_cheek_max_y) ), (self._returnImage(l_cheek_min_x, l_cheek_max_x, l_cheek_min_y, l_cheek_max_y, highlight), (l_cheek_min_x, l_cheek_max_x, l_cheek_min_y, l_cheek_max_y)))
         
         return (self._returnImage(r_cheek_min_x, r_cheek_max_x, r_cheek_min_y, r_cheek_max_y, highlight), 
                 self._returnImage(l_cheek_min_x, l_cheek_max_x, l_cheek_min_y, l_cheek_max_y, highlight))

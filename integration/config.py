@@ -1,4 +1,23 @@
+__author__ = 'Deni Susanto'
+__copyright__ = 'Copyright 2020, AI Facial Skincare Advisor'
+__credits__ = ['Dr. Carmen L.', 'Subhayan R.', 'Kevin H.', 'Mohammad A.']
+__email__ = 'densus@hku.hk'
+
 import numpy as np
+
+#MAIN
+PRODUCT_CATALOGUE_CSV_PATH = './product_catalogue_with_image_link.csv'
+WEB_DIR = "./web_dir_test" #the directory to save processed images
+WEB_ADDRESS = "http://getmyimage" #HTTP prefix to find the get the image
+MAIN_IMAGE_WIDTH = 200
+SCORE_STANDARD = 4
+MAX_ACNE_SCORE = 4
+MAX_WRINKLES_SCORE = 4
+MAX_CROWS_FEET_SCORE = 4
+MAX_DARK_EYE_SCORE = 2
+MAX_SALLOWNESS_SCORE = 2
+EACH_ISSUE_N_RECOMM = 10
+FULL_N_RECOMM = 50
 
 #facial landmark
 F_L_PREDICTOR_PATH = "./models/shape_predictor_68_face_landmarks.dat"
@@ -71,8 +90,8 @@ RECOMMENDATION_THRESHOLD = {
     'acne' : 2.0, 
     'wrinkles' : 2.0, 
     'crows_feet' : 2.0, 
-    'dark_eye' : 1.2, 
-    'sallowness' : 1.6
+    'dark_eye' : 1.0, 
+    'sallowness' : 1.0
 }
 RECOMMENDATION_PRODUCT_MAPPING = {
     'acne' : ['Cleanser'],
