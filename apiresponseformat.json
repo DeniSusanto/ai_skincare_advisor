@@ -1,0 +1,63 @@
+//All values represent object property name to call for the data, e.g. value "acne_fh" means the value comes from obj.acne_fh
+
+{
+  "full_image": "full_image", //complete the path with webserver dir path
+  "full_recommendations": "full_recommendations",
+  "acne": {
+    "score": {
+      "overall": "acne_overall",
+      "fh": "acne_fh",
+      "rc": "acne_rc",
+      "lc": "acne_lc",
+      "ch": "acne_ch"
+    },
+    "image": {
+      "overall": "full_image" //complete the path with webserver dir path
+    },
+    "recommendation": "acne_recommendation"
+  },
+  "wrinkles": {
+    "score": {
+      "overall": "wrinkles_overall",
+      "fh": "wrinkles_fh",
+      "rnl": "wrinkles_rnl",
+      "lnl": "wrinkles_lnl",
+      "rbe": "wrinkles_rbe",
+      "lbe": "wrinkles_lbe"
+    },
+    "image": {
+      //complete all the paths with webserver dir path
+      "fh": "wrinkles_fh_image",
+      "rnl": "wrinkles_rnl_image",
+      "lnl": "wrinkles_lnl_image",
+      "rbe": "wrinkles_rbe_image",
+      "lbe": "wrinkles_lbe_image"
+    },
+    "recommendation": "wrinkles_recommendation"
+  },
+  "crows_feet": {
+    "score": {
+      "overall": "crows_feet_overall",
+      "r": "crows_feet_r",
+      "l": "crows_feet_l"
+    },
+    "image": {
+      //complete all the paths with webserver dir path
+      "r": "crows_feet_r_image",
+      "l": "crows_feet_l_image"
+    },
+    "recommendation": "crows_feet_recommendation"
+  },
+  "dark_eye": {
+    "score": {
+      "overall": "dark_eye_overall"
+    },
+    "recommendation": "dark_eye_recommendation"
+  },
+  "sallowness": {
+    "score": {
+      "overall": "sallowness_overall"
+    },
+    "recommendation": "sallowness_recommendation"
+  }
+}
