@@ -64,28 +64,47 @@ def skincare_advice():
         'statusCode': 200,
         'body': {
             'identifier': sca.identifier,
-            'acne_overall': sca.acne_overall,
-            'acne_fh': sca.acne_fh,
-            'acne_rc': sca.acne_rc,
-            'acne_lc': sca.acne_lc,
-            'acne_ch': sca.acne_ch,
-            'wrinkles_overall': sca.wrinkles_overall,
-            'wrinkles_fh': sca.wrinkles_fh,
-            'wrinkles_rnl': sca.wrinkles_rnl,
-            'wrinkles_lnl': sca.wrinkles_lnl,
-            'wrinkles_rbe': sca.wrinkles_rbe,
-            'wrinkles_lbe': sca.wrinkles_lbe,
-            'crows_feet_overall': sca.crows_feet_overall,
-            'crows_feet_r': sca.crows_feet_r,
-            'crows_feet_l': sca.crows_feet_l,
-            'dark_eye_overall': sca.dark_eye_overall,
-            'sallowness_overall': sca.sallowness_overall,
-            'full_recommendation': sca.full_recommendations,
-            'acne_recommendation': sca.acne_recommendation,
-            'wrinkles_recommendation': sca.wrinkles_recommendation,
-            'crows_feet_recommendation': sca.crows_feet_recommendation,
-            'dark_eye_recommendation': sca.dark_eye_recommendation,
-            'sallowness_recommendation': sca.sallowness_recommendation
+            'full_recommendations': sca.full_recommendations,
+            'acne': {
+                'score': {
+                    'overall': sca.acne_overall,
+                    'fh': sca.acne_fh,
+                    'rc': sca.acne_rc,
+                    'lc': sca.acne_lc,
+                    'ch': sca.acne_ch
+                },
+                'recommendation': sca.acne_recommendation
+            },
+            'wrinkles': {
+                'score': {
+                    'overall': sca.wrinkles_overall,
+                    'fh': sca.wrinkles_fh,
+                    'rnl': sca.wrinkles_rnl,
+                    'lnl': sca.wrinkles_lnl,
+                    'rbe': sca.wrinkles_rbe,
+                    'lbe': sca.wrinkles_lbe
+                }
+            },
+            'crows_feet': {
+                'score': {
+                    'overall': sca.crows_feet_overall,
+                    'r': sca.crows_feet_r,
+                    'l': sca.crows_feet_l
+                },
+                'recommendation': sca.crows_feet_recommendation
+            },
+            'dark_eye': {
+                'score': {
+                    'overall': sca.dark_eye_overall
+                },
+                'recommendation': sca.dark_eye_recommendation
+            },
+            'sallowness': {
+                'score': {
+                    'overall': sca.sallowness_overall,
+                },
+                'recommendation': sca.sallowness_recommendation
+            }
         }
     }
 
