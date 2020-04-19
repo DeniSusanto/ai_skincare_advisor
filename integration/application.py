@@ -20,8 +20,6 @@ import numpy as np
 from PIL import Image
 import io
 
-application = Flask(__name__)
-
 # PLEASE SET THINGS IN CONFIG.PY
 PRODUCT_CATALOGUE_CSV_PATH = config.PRODUCT_CATALOGUE_CSV_PATH
 WEB_DIR = config.WEB_DIR
@@ -44,6 +42,9 @@ def stringToImage(base64_string):
 
 def toRGB(image):
     return cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
+
+
+application = Flask(__name__)
 
 
 @application.route('/')
