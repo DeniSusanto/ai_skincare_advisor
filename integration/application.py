@@ -14,7 +14,7 @@ import random
 import time
 import imutils
 import cv2
-from flask import Flask, request
+from flask import Flask, request, send_file
 import base64
 import numpy as np
 from PIL import Image
@@ -60,10 +60,13 @@ def skincare_advice():
 
     sca = SkinCareAdvisor(user_input, image)
 
+    identifier = str(sca.identifier)
+    url = "http://bfc7b37d.ngrok.io/image?file="
+
     return {
         'statusCode': 200,
         'body': {
-            'identifier': sca.identifier,
+            'full_image': url + identifier + '_full_image.jpg',
             'full_recommendations': sca.full_recommendations,
             'acne': {
                 'score': {
@@ -72,6 +75,9 @@ def skincare_advice():
                     'rc': sca.acne_rc,
                     'lc': sca.acne_lc,
                     'ch': sca.acne_ch
+                },
+                "image": {
+                    "overall": url + identifier + '_full_image.jpg'
                 },
                 'recommendation': sca.acne_recommendation
             },
@@ -83,13 +89,24 @@ def skincare_advice():
                     'lnl': sca.wrinkles_lnl,
                     'rbe': sca.wrinkles_rbe,
                     'lbe': sca.wrinkles_lbe
-                }
+                },
+                "image": {
+                    "fh": url + identifier + '_wrinkles_fh_image.jpg',
+                    "rnl": url + identifier + '_wrinkles_rnl_image.jpg',
+                    "lnl": url + identifier + '_wrinkles_lnl_image.jpg',
+                    "rbe": url + identifier + '_wrinkles_rbe_image.jpg',
+                    "lbe": url + identifier + '_wrinkles_lbe_image.jpg'
+                },
             },
             'crows_feet': {
                 'score': {
                     'overall': sca.crows_feet_overall,
                     'r': sca.crows_feet_r,
                     'l': sca.crows_feet_l
+                },
+                "image": {
+                    "r": url + identifier + '_crows_feet_r_image.jpg',
+                    "l": url + identifier + '_crows_feet_l_image.jpg'
                 },
                 'recommendation': sca.crows_feet_recommendation
             },
@@ -109,21 +126,11 @@ def skincare_advice():
     }
 
 
-@application.route('/image', methods=['POST'])
+@application.route('/image')
 def get_image():
-    user_input = request.get_json()
-    identifier = user_input['identifier']
-    image_type = user_input['type']
-
-    path = WEB_DIR + '/' + str(identifier) + '_' + image_type + '_image.jpg'
-
-    with open(path, "rb") as image_file:
-        encoded_string = base64.b64encode(image_file.read())
-
-        return {
-            'statusCode': 200,
-            'image': encoded_string.decode('utf-8')
-        }
+    filename = request.args.get('file')
+    path = './web_dir_test/' + filename
+    return send_file(path, mimetype='image/gif')
 
 
 if __name__ == '__main__':
