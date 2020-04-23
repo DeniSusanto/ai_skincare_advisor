@@ -27,7 +27,9 @@ MAX_DARK_EYE_SCORE = config.MAX_DARK_EYE_SCORE
 MAX_SALLOWNESS_SCORE = config.MAX_SALLOWNESS_SCORE
 EACH_ISSUE_N_RECOMM = config.EACH_ISSUE_N_RECOMM
 FULL_N_RECOMM = config.FULL_N_RECOMM
-
+ISSUES_LIST = config.FACIAL_ISSUES_KEYS
+CONCERNS_NAME_MAPPING = config.CONCERNS_NAME_MAPPING
+AVAILABLE_CONCERNS = config.AVAILABLE_CONCERNS
 def standardize_score(score, from_standard, to_standard = SCORE_STANDARD):
     return (score/from_standard)*to_standard
 
@@ -158,11 +160,16 @@ class SkinCareAdvisor():
         #sallowness
         self.sallowness_recommendation = self._get_recom_json(recom_object, 'sallowness','Face Mask', 'Sallowness')
         
+        #taking care of concern
+        self.concerns = self._extract_concerns_json(recom_object)
         
     def _get_recom_json(self, recom_object, key, label, issue_name, limit=EACH_ISSUE_N_RECOMM):
         tmp = {}
         if key in recom_object:
-            recom_df = recom_object[key][label]
+            if label:
+                recom_df = recom_object[key][label]
+            else:
+                recom_df = recom_object[key]
             counter = 0
             for idx, row in recom_df.iterrows():
                 if limit == counter:
@@ -180,3 +187,27 @@ class SkinCareAdvisor():
                 }
         return json.dumps(tmp)
     
+    def _extract_concerns_json(self, recom_object):
+        tmp = {}
+        for key in recom_object:
+            if (key not in ISSUES_LIST) and (key in AVAILABLE_CONCERNS):
+                concern_name = CONCERNS_NAME_MAPPING[key]
+                tmp[concern_name] = {}
+                tmp[concern_name]["recommendation"] = {}
+                recom_df = recom_object[key]
+                counter = 0
+                for idx, row in recom_df.iterrows():
+                    if EACH_ISSUE_N_RECOMM == counter:
+                        break
+                    tmp[concern_name]["recommendation"][idx] = {
+                        "title":row['name'],
+                        "issue": concern_name,
+                        "image":{
+                            "uri": row['image_url']
+                        },
+                        "price":row['price'],
+                        "rating":row['rating'],
+                        "likes":row['likes'],
+                        "description":row['description'],
+                    }
+        return json.dumps(tmp)
