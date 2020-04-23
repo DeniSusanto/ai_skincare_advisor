@@ -85,6 +85,9 @@ NL_WEIGHT = 0.25
 #RECOMMENDATION SYSTEM
 FACIAL_ISSUES_KEYS = ['acne', 'wrinkles', 'crows_feet', 'dark_eye', 'sallowness', 'dryness']
 AVAILABLE_CONCERNS = ['dryness', 'wrinkles', 'oiliness', 'dullness', 'dark_spots', 'pores', 'redness', 'acne', 'uneven_skin_tone', 'sallowness']
+CONCERNS_NAME_MAPPING = {
+'dryness' : "Dryness", 'wrinkles' : "Wrinkles", 'oiliness' : "Oiliness", 'dullness': "Dullness", 'dark_spots': "Dark Spots", 'pores': "Pores", 'redness': "Redness", 'acne': "Acne", 'uneven_skin_tone': "Uneven Skin Tone", 'sallowness': "Sallowness"
+}
 PRODUCT_CATALOGUE_PATH = "product_catalogue.csv"
 RECOMMENDATION_THRESHOLD = {
     'acne' : 2.0, 
