@@ -42,16 +42,17 @@ export default class InputImage extends React.Component {
         launch = ImagePicker.launchImageLibraryAsync;
       }
       let result = await launch({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        base64: true,
         allowsEditing: true,
         aspect: [2, 3],
         quality: 1,
       });
       if (!result.cancelled) {
-        this.setState({ image: result.uri });
+        this.setState({ image: result.base64 });
         let confirmationParams = {
           questionnaire: this.questionnaireProps,
           image: result.uri,
+          image_64: result.base64,
         };
         this.props.navigation.navigate("Confirm Selfie", confirmationParams);
       }

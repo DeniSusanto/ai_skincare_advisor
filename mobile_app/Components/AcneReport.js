@@ -6,32 +6,38 @@ import Color from "../Cons/Color";
 import FacialIssue from "../Components/FacialIssue";
 import OneImage from "./OneImageReport";
 
-export default function Acne(props) {
-  let mock_data = {
-    Forehead: "3.3",
-    "Right Cheek": "1.7",
-    "Left Cheek": "2.3",
-    Chin: "1.0",
+export default function Acne(routeProps) {
+  let props = routeProps.route.params;
+  let navigation = routeProps.navigation;
+  let data_acne = props.issues.Acne.score;
+  let acne_name_mapping = {
+    fh: "Forehead",
+    rc: "Right Cheek",
+    lc: "Left Cheek",
+    ch: "Chin",
   };
-  let mock_source = "../images/leo.png";
-
-  let navigation = props.navigation;
   let content = [];
-  for (var key in mock_data) {
-    content.push(
-      <FacialIssue
-        key={key}
-        issue={key}
-        score={mock_data[key]}
-        noRecommendation={true}
-      />
-    );
+  for (var key in data_acne) {
+    if (key != "overall") {
+      content.push(
+        <FacialIssue
+          key={key}
+          issue={acne_name_mapping[key]}
+          score={data_acne[key].toFixed(2)}
+          noRecommendation={true}
+        />
+      );
+    }
   }
   return (
-    <DefaultReportView navigation={navigation} headbar="Acne Analysis">
+    <DefaultReportView
+      navigation={navigation}
+      headbar="Acne Analysis"
+      routeProps={routeProps}
+    >
       <View style={styles.screen}>
         <View>
-          <OneImage source={require(mock_source)} />
+          <OneImage source={{ uri: props.full_image }} />
         </View>
         <View style={styles.security_level_container}>
           <Text style={{ fontSize: 20, fontWeight: "bold", marginRight: 6 }}>

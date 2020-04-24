@@ -18,6 +18,15 @@ import {
 } from "react-native-elements";
 import Color from "../Cons/Color";
 export default function ConfirmImage(routeProps) {
+  function handleNavigation(routeProps) {
+    let props_data = {
+      questionnaire: routeProps.route.params.questionnaire,
+      image: routeProps.route.params.image,
+      image_64: routeProps.route.params.image_64,
+    };
+    routeProps.navigation.navigate("Fetch Report", props_data);
+    // routeProps.navigation.navigate("Report", props_data);
+  }
   let props = routeProps.route.params;
   const selfieImage = props.image;
   return (
@@ -79,7 +88,7 @@ export default function ConfirmImage(routeProps) {
               borderRadius: 20,
               overflow: "hidden",
             }}
-            onPress={() => routeProps.navigation.navigate("Report")}
+            onPress={() => handleNavigation(routeProps)}
           />
         </View>
       </View>

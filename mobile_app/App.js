@@ -8,6 +8,7 @@ import Recommendation from "./Screens/Recommendation";
 import Questionnaire from "./Screens/QuestionnaireScreen";
 import LandingScreen from "./Screens/LandingScreen";
 import ConfirmImage from "./Screens/ConfirmImage";
+import LoadingScreen from "./Screens/LoadingScreen";
 
 const Stack = createStackNavigator();
 
@@ -37,7 +38,13 @@ export default function App() {
           }}
         />
         <Stack.Screen name="Confirm Selfie" component={ConfirmImage} />
-
+        <Stack.Screen
+          name="Fetch Report"
+          component={LoadingScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen
           name="Report"
           component={ReportScreen}

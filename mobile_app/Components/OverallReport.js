@@ -5,104 +5,42 @@ import DefaultReportView from "../Components/DefaultReportView";
 import Color from "../Cons/Color";
 import FacialIssue from "../Components/FacialIssue";
 import OneImage from "./OneImageReport";
+import Concern from "../Components/OtherConcerns";
+import Api from "../Cons/Api";
 
-export default function Overall(props) {
-  let mock_data = {
-    Acne: { score: "1.3", recommendation: {} },
-    Wrinkles: {
-      score: "2.7",
-      recommendation: {
-        "1": {
-          title: "Loreal White Bottle",
-          issue: "Acne",
-          image: {
-            uri:
-              "https://www.sbcskincare.co.uk/wp-content/uploads/2016/05/Vitamin-C-Skincare-Gel_500ml_MOCK_VTC152ab-02-MW_LR-256x256.jpg",
-          },
-          price: 20,
-          rating: 3.6,
-          likes: 21890,
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. \
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, \
-sunt in culpa qui officia deserunt mollit anim id est laborum",
-        },
-      },
-    },
-    "Dark Eye Circle": { score: "0.3", recommendation: {} },
-    "Crow's Feet": {
-      score: "2.0",
-      recommendation: {
-        "1": {
-          title: "Loreal White Bottle",
-          issue: "Acne",
-          image: {
-            uri:
-              "https://www.sbcskincare.co.uk/wp-content/uploads/2016/05/Vitamin-C-Skincare-Gel_500ml_MOCK_VTC152ab-02-MW_LR-256x256.jpg",
-          },
-          price: 20,
-          rating: 3.6,
-          likes: 21890,
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. \
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, \
-sunt in culpa qui officia deserunt mollit anim id est laborum",
-        },
-        "2": {
-          title: "The Blue Bottle Thing",
-          issue: "Wrinkles",
-          image: require("../images/sc2.jpg"),
-          price: 140,
-          rating: 4.2,
-          likes: 15213,
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. \
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, \
-sunt in culpa qui officia deserunt mollit anim id est laborum",
-        },
-      },
-    },
-    Sallowness: {
-      score: "3.1",
-      recommendation: {
-        "3": {
-          title: "Golden Pee",
-          issue: "Dark Eye Circle",
-          image: require("../images/sc3.jpg"),
-          price: 103,
-          rating: 4.6,
-          likes: 14208,
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. \
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, \
-sunt in culpa qui officia deserunt mollit anim id est laborum",
-        },
-      },
-    },
-  };
-  let mock_source = "../images/leo.png";
-
-  let navigation = props.navigation;
+export default function Overall(routeProps) {
+  let props = routeProps.route.params;
+  let navigation = routeProps.navigation;
+  let concerns = JSON.parse(props.concerns);
+  let issues = props.issues;
   let content = [];
-  for (var key in mock_data) {
+  for (var key in issues) {
     content.push(
       <FacialIssue
         key={key}
         issue={key}
-        score={mock_data[key]["score"]}
-        prod={mock_data[key]["recommendation"]}
+        score={issues[key]["score"]["overall"].toFixed(2)}
+        prod={JSON.parse(issues[key]["recommendation"])}
       />
     );
   }
+
+  let concern_content = [];
+  for (var key in concerns) {
+    concern_content.push(
+      <Concern key={key} issue={key} prod={concerns[key]["recommendation"]} />
+    );
+  }
+
   return (
-    <DefaultReportView navigation={navigation} headbar="Overall Analysis">
+    <DefaultReportView
+      navigation={navigation}
+      headbar="Overall Analysis"
+      routeProps={routeProps}
+    >
       <View style={styles.screen}>
         <View>
-          <OneImage source={require(mock_source)} />
+          <OneImage source={{ uri: props.full_image }} />
         </View>
         <View style={styles.security_level_container}>
           <Text style={{ fontSize: 20, fontWeight: "bold", marginRight: 6 }}>
@@ -126,6 +64,37 @@ sunt in culpa qui officia deserunt mollit anim id est laborum",
         <Divider style={{ height: 2, width: "90%", marginBottom: 15 }} />
 
         {content}
+
+        {!(
+          Object.keys(concerns).length === 0 && concerns.constructor === Object
+        ) && (
+          <React.Fragment>
+            <Divider style={{ height: 2, width: "90%", marginVertical: 10 }} />
+            <View style={styles.security_level_container}>
+              <Text
+                style={{ fontSize: 20, fontWeight: "bold", marginRight: 6 }}
+              >
+                Other Concerns
+              </Text>
+              <Tooltip
+                containerStyle={{
+                  height: "auto",
+                  width: "auto",
+                }}
+                popover={
+                  <Text style={{ color: "white" }}>
+                    These are the concerns that you {"\n"}specified in the
+                    questionnaire
+                  </Text>
+                }
+              >
+                <Icon name="info" size={26} />
+              </Tooltip>
+            </View>
+            <Divider style={{ height: 2, width: "90%", marginVertical: 10 }} />
+            {concern_content}
+          </React.Fragment>
+        )}
       </View>
     </DefaultReportView>
   );
@@ -146,6 +115,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 10,
+    marginVertical: 10,
   },
 });

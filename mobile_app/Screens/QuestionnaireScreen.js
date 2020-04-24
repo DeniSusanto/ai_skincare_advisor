@@ -25,9 +25,8 @@ export default function Questionnaire(props) {
       age: age,
       skin_type: skinType,
       concerns: concerns,
-      preference: preference,
-      allergy: allergy,
-      allergy: allergy,
+      preferences: preference,
+      allergies: allergy,
       price: price,
     };
     // CHANGE THIS
@@ -38,19 +37,6 @@ export default function Questionnaire(props) {
   }
   function processAge(value) {
     setAge(value);
-  }
-  function processAllergy(value) {
-    value = value.toLowerCase();
-    return value;
-  }
-  function processPreference(value) {
-    value = value.toLowerCase();
-    return value;
-  }
-  function processConcern(value) {
-    value = value.toLowerCase();
-    value = value.split(" ").join("_");
-    setConcerns(value);
   }
   function processSkinType(value) {
     value = value.toLowerCase();

@@ -39,7 +39,7 @@ def saveImage(image, file_name, prefix,  directory = WEB_DIR, address = WEB_ADDR
     path = join(directory, rev_file_name)
     cv2.imwrite(path, image)
     
-    return WEB_ADDRESS + "/" + rev_file_name
+    return WEB_ADDRESS + rev_file_name
 
 #identifier is a parameter that will appended to the processed images to differentiate between users. If unique_id is None, then the program will generate random ID
 #questionnaire is string in json format
@@ -90,7 +90,10 @@ class SkinCareAdvisor():
         self.dark_eye_overall = standardize_score(dark_eye_overall, MAX_DARK_EYE_SCORE)
         
         #sallowness
-        real_age = int(questionnaire["age"])
+        if questionnaire["age"]:
+            real_age = int(questionnaire["age"])
+        else:
+            real_age = 100
         predicted_age = age_gender.predict_age_gender()[0]
         sallowness_overall = get_sallowness_score(real_age,predicted_age)
         self.sallowness_overall = standardize_score(sallowness_overall, MAX_SALLOWNESS_SCORE)
@@ -101,15 +104,15 @@ class SkinCareAdvisor():
         self.full_image = saveImage(resized_image, "full_image.jpg", self.identifier)
         
         #wrinkles
-        self.wrinkles_fh_image = saveImage(wrinkles.fh_image, "wrinkles_fh_image.jpg", self.identifier)
-        self.wrinkles_rnl_image = saveImage(wrinkles.r_nl_image, "wrinkles_rnl_image.jpg", self.identifier)
-        self.wrinkles_lnl_image = saveImage(wrinkles.l_nl_image, "wrinkles_lnl_image.jpg", self.identifier)
-        self.wrinkles_rbe_image = saveImage(wrinkles.r_be_image, "wrinkles_rbe_image.jpg", self.identifier)
-        self.wrinkles_lbe_image = saveImage(wrinkles.l_be_image, "wrinkles_lbe_image.jpg", self.identifier)
+#         self.wrinkles_fh_image = saveImage(wrinkles.fh_image, "wrinkles_fh_image.jpg", self.identifier)
+#         self.wrinkles_rnl_image = saveImage(wrinkles.r_nl_image, "wrinkles_rnl_image.jpg", self.identifier)
+#         self.wrinkles_lnl_image = saveImage(wrinkles.l_nl_image, "wrinkles_lnl_image.jpg", self.identifier)
+#         self.wrinkles_rbe_image = saveImage(wrinkles.r_be_image, "wrinkles_rbe_image.jpg", self.identifier)
+#         self.wrinkles_lbe_image = saveImage(wrinkles.l_be_image, "wrinkles_lbe_image.jpg", self.identifier)
         
-        #crows_feet
-        self.crows_feet_r_image = saveImage(wrinkles.r_cf_image, "crows_feet_r_image.jpg", self.identifier)
-        self.crows_feet_l_image = saveImage(wrinkles.l_cf_image, "crows_feet_l_image.jpg", self.identifier)
+#         #crows_feet
+#         self.crows_feet_r_image = saveImage(wrinkles.r_cf_image, "crows_feet_r_image.jpg", self.identifier)
+#         self.crows_feet_l_image = saveImage(wrinkles.l_cf_image, "crows_feet_l_image.jpg", self.identifier)
         
         #Take care of the recommendation
         main_input = {
@@ -146,6 +149,7 @@ class SkinCareAdvisor():
                     "likes":row['likes'],
                     "description":row['description'],
                 }
+                counter += 1
         self.full_recommendations = json.dumps(full_recommendations)
         
         
@@ -185,6 +189,7 @@ class SkinCareAdvisor():
                     "likes":row['likes'],
                     "description":row['description'],
                 }
+                counter += 1
         return json.dumps(tmp)
     
     def _extract_concerns_json(self, recom_object):
@@ -210,4 +215,5 @@ class SkinCareAdvisor():
                         "likes":row['likes'],
                         "description":row['description'],
                     }
+                    counter += 1
         return json.dumps(tmp)

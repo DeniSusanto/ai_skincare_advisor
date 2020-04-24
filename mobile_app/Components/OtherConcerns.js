@@ -5,7 +5,7 @@ import ScoreIndicator from "../Components/ScoreIndicator";
 import Color from "../Cons/Color";
 import CatalogueList from "../Components/CatalogueList";
 
-export default function FacialIssue(props) {
+export default function Concern(props) {
   const [isVisible, setisVisible] = React.useState(false);
   let catalogue = [];
   let prod = props.prod;
@@ -74,26 +74,6 @@ export default function FacialIssue(props) {
                 onPress={() => setisVisible(true)}
               />
             )}
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            width: "85%",
-          }}
-        >
-          <Text
-            style={{
-              fontWeight: "bold",
-              fontSize: 14,
-            }}
-          >
-            Score: {props.score}
-          </Text>
-        </View>
-        <View style={{ width: "100%" }}>
-          <ScoreIndicator score={props.score} />
         </View>
       </View>
     </React.Fragment>

@@ -6,35 +6,57 @@ import Color from "../Cons/Color";
 import FacialIssue from "../Components/FacialIssue";
 import OneImage from "./OneImageReport";
 
-export default function Wrinkles(props) {
-  let mock_data = {
-    Forehead: "0.3",
-    "R-Below Eyes": "2.7",
-    "L-Below Eyes": "1.3",
-    "R-Nasal Lines": "3.7",
-    "L-Nasal Lines": "2.3",
-    "R-Crows Feet": "0.7",
-    "L-Crows Feet": "2.5",
-  };
-  let mock_source = "../images/leo.png";
+export default function Wrinkles(routeProps) {
+  let props = routeProps.route.params;
+  let navigation = routeProps.navigation;
+  let data_wrinkles = props.issues.Wrinkles.score;
+  let data_cf = props.issues["Crow's Feet"].score;
 
-  let navigation = props.navigation;
+  let wrinkle_name_mapping = {
+    fh: "Forehead",
+    rnl: "R - Nasal Line",
+    lnl: "L - Nasal Line",
+    rbe: "R - Below Eyes",
+    lbe: "L - Below Eyes",
+  };
+  let cf_name_mapping = {
+    r: "R - Crow's Feet",
+    l: "L - Crow's Feet",
+  };
   let content = [];
-  for (var key in mock_data) {
-    content.push(
-      <FacialIssue
-        key={key}
-        issue={key}
-        score={mock_data[key]}
-        noRecommendation={true}
-      />
-    );
+  for (var key in data_wrinkles) {
+    if (key != "overall") {
+      content.push(
+        <FacialIssue
+          key={key}
+          issue={wrinkle_name_mapping[key]}
+          score={data_wrinkles[key].toFixed(2)}
+          noRecommendation={true}
+        />
+      );
+    }
+  }
+  for (var key in data_cf) {
+    if (key != "overall") {
+      content.push(
+        <FacialIssue
+          key={key}
+          issue={cf_name_mapping[key]}
+          score={data_cf[key].toFixed(2)}
+          noRecommendation={true}
+        />
+      );
+    }
   }
   return (
-    <DefaultReportView navigation={navigation} headbar="Wrinkles Analysis">
+    <DefaultReportView
+      navigation={navigation}
+      headbar="Wrinkles Analysis"
+      routeProps={routeProps}
+    >
       <View style={styles.screen}>
         <View>
-          <OneImage source={require(mock_source)} />
+          <OneImage source={{ uri: props.full_image }} />
         </View>
         <View style={styles.security_level_container}>
           <Text style={{ fontSize: 20, fontWeight: "bold", marginRight: 6 }}>

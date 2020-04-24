@@ -103,7 +103,7 @@ export default function CatalogueList(props) {
           <ScrollView
             style={{
               width: "90%",
-              height: 120,
+              height: 70,
               backgroundColor: "white",
               paddingLeft: 10,
               paddingRight: 10,

@@ -2,7 +2,12 @@ import * as React from "react";
 import { View, ScrollView } from "react-native";
 import { Button, Header, Icon } from "react-native-elements";
 import Color from "../Cons/Color";
-export default function DefaultReportView({ navigation, headbar, children }) {
+export default function DefaultReportView({
+  navigation,
+  headbar,
+  children,
+  routeProps,
+}) {
   return (
     <View
       style={{
@@ -11,13 +16,17 @@ export default function DefaultReportView({ navigation, headbar, children }) {
         alignItems: "stretch",
       }}
     >
-      <HeaderMenu navigation={navigation} headbar={headbar} />
+      <HeaderMenu
+        navigation={navigation}
+        headbar={headbar}
+        props={routeProps.route.params}
+      />
       <ScrollView>{children}</ScrollView>
     </View>
   );
 }
 
-function HeaderMenu({ navigation, headbar }) {
+function HeaderMenu({ navigation, headbar, props }) {
   return (
     <Header
       statusBarProps={{ translucent: true }}
@@ -35,7 +44,7 @@ function HeaderMenu({ navigation, headbar }) {
       rightComponent={
         <MenuIcon
           name="local-mall"
-          navigate={() => navigation.navigate("Products Recommendation")}
+          navigate={() => navigation.navigate("Products Recommendation", props)}
           size={32}
         />
       }

@@ -28,9 +28,8 @@ def get_skin_tone_RGB(img):
     height, width, channels = img_skin_only.shape
     for i in range (height):
         for j in range (width):
-            if((img_HSV.item(i, j, 0) <= HSV_MAX) and (YCRCB_MIN_1 <= img_YCrCb.item(i, j, 1) <= YCRCB_MAX_1) and (YCRCB_MIN_2 <= img_YCrCb.item(i, j, 2) <= YCRCB_MAX_2)):
-                blue.append(img_skin_only[i, j].item(0))
-                green.append(img_skin_only[i, j].item(1))
-                red.append(img_skin_only[i, j].item(2))
+            blue.append(img_skin_only[i, j].item(0))
+            green.append(img_skin_only[i, j].item(1))
+            red.append(img_skin_only[i, j].item(2))
     skin_tone_estimate_BGR = [np.mean(blue), np.mean(green), np.mean(red)]
     return (int(round(skin_tone_estimate_BGR[2])), int(round(skin_tone_estimate_BGR[1])), int(round(skin_tone_estimate_BGR[0])))

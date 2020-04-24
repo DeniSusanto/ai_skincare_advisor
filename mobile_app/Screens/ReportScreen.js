@@ -30,7 +30,7 @@ function CustomDrawerContent(props) {
 
 const Drawer = createDrawerNavigator();
 
-function MyDrawer() {
+export default function MyDrawer(routeProps) {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
@@ -39,15 +39,23 @@ function MyDrawer() {
         width: "55%",
       }}
     >
-      <Drawer.Screen name="Overall" component={Overall} />
-      <Drawer.Screen name="Acne" component={Acne} />
-      <Drawer.Screen name="Wrinkles" component={Wrinkles} />
-      <Drawer.Screen name="Crow's Feet" component={CrowsFeet} />
-      <Drawer.Screen name="Dark Eye Circle" component={DarkEyeCircle} />
+      <Drawer.Screen
+        name="Overall"
+        component={Overall}
+        initialParams={routeProps.route.params.content}
+      />
+      <Drawer.Screen
+        name="Acne"
+        component={Acne}
+        initialParams={routeProps.route.params.content}
+      />
+      <Drawer.Screen
+        name="Wrinkles"
+        component={Wrinkles}
+        initialParams={routeProps.route.params.content}
+      />
+      {/* <Drawer.Screen name="Crow's Feet" component={CrowsFeet} /> */}
+      {/* <Drawer.Screen name="Dark Eye Circle" component={DarkEyeCircle} /> */}
     </Drawer.Navigator>
   );
-}
-
-export default function ReportScreen() {
-  return <MyDrawer />;
 }
