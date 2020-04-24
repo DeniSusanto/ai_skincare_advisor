@@ -5,13 +5,13 @@ https://drive.google.com/open?id=1reg70l9NnSJSDM8VAValvojyhizn2yLO
 
 ### API Usage
 
-Run API locally by `python application.py`
+API is being hosted on Linode (Linux server)
 
-Address is on `http://localhost:5000`
+Address is on `http://139.162.62.89:5000/`
 
 ##### Skin Care Advisor
 
-POST request to `http://localhost:5000/sca`
+POST request to `http://139.162.62.89:5000/sca`
 
 Body of request contains the following JSON:
 ```
@@ -26,42 +26,11 @@ Body of request contains the following JSON:
 }
 ```
 
-Returns a JSON response as following:
-
-```
-{
-    statusCode: 200,
-    body: {
-        "identifier": 17733369882703254762,
-        "acne_ch": 0.010000000000000009,
-        "acne_fh": -0.0040000000000000036,
-        "acne_lc": 0.3680000000000001,
-        "acne_overall": 0.096,
-        "acne_rc": 0.008000000000000007,
-        "acne_recommendation": "{...}"
-    }
-}
-```
+Returns a JSON response of scores, recommendations, image links, etc.
 
 ##### Retrieve cropped images
 
-POST request to `http://localhost:5000/image`
+GET request, follow link received from above SCA request
 
-Body of request contains the following JSON:
-```
-{
-	"identifier": 17733369882703254762,
-	"type": "crows_feet_l"
-}
-```
+Returns an image file
 
-Replace key `type` with image type e.g. `"full_image"`, 
-`"wrinkles_lbe_image"`
-
-Returns a JSON response as following:
-```
-{
-    statusCode: 200,
-    image: "base64 encoding of image"
-}
-```
