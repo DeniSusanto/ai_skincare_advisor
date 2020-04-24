@@ -44,15 +44,15 @@ def toRGB(image):
     return cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
 
 
-application = Flask(__name__)
+app = Flask(__name__)
 
 
-@application.route('/')
+@app.route('/')
 def index():
     return 'Server is running!'
 
 
-@application.route('/sca', methods=['POST'])
+@app.route('/sca', methods=['POST'])
 def skincare_advice():
     user_input = request.get_json()
     img_string = user_input['image']
@@ -61,72 +61,75 @@ def skincare_advice():
     sca = SkinCareAdvisor(user_input, image)
 
     identifier = str(sca.identifier)
-    url = "http://bfc7b37d.ngrok.io/image?file="
+    url = "http://0c7f5315.ngrok.io/image?file="
 
     return {
         'statusCode': 200,
         'body': {
             'full_image': url + identifier + '_full_image.jpg',
             'full_recommendations': sca.full_recommendations,
-            'acne': {
-                'score': {
-                    'overall': sca.acne_overall,
-                    'fh': sca.acne_fh,
-                    'rc': sca.acne_rc,
-                    'lc': sca.acne_lc,
-                    'ch': sca.acne_ch
+            'issues': {
+                'acne': {
+                    'score': {
+                        'overall': sca.acne_overall,
+                        'fh': sca.acne_fh,
+                        'rc': sca.acne_rc,
+                        'lc': sca.acne_lc,
+                        'ch': sca.acne_ch
+                    },
+                    "image": {
+                        "overall": url + identifier + '_full_image.jpg'
+                    },
+                    'recommendation': sca.acne_recommendation
                 },
-                "image": {
-                    "overall": url + identifier + '_full_image.jpg'
+                'wrinkles': {
+                    'score': {
+                        'overall': sca.wrinkles_overall,
+                        'fh': sca.wrinkles_fh,
+                        'rnl': sca.wrinkles_rnl,
+                        'lnl': sca.wrinkles_lnl,
+                        'rbe': sca.wrinkles_rbe,
+                        'lbe': sca.wrinkles_lbe
+                    },
+                    "image": {
+                        "fh": url + identifier + '_wrinkles_fh_image.jpg',
+                        "rnl": url + identifier + '_wrinkles_rnl_image.jpg',
+                        "lnl": url + identifier + '_wrinkles_lnl_image.jpg',
+                        "rbe": url + identifier + '_wrinkles_rbe_image.jpg',
+                        "lbe": url + identifier + '_wrinkles_lbe_image.jpg'
+                    },
                 },
-                'recommendation': sca.acne_recommendation
+                'crows_feet': {
+                    'score': {
+                        'overall': sca.crows_feet_overall,
+                        'r': sca.crows_feet_r,
+                        'l': sca.crows_feet_l
+                    },
+                    "image": {
+                        "r": url + identifier + '_crows_feet_r_image.jpg',
+                        "l": url + identifier + '_crows_feet_l_image.jpg'
+                    },
+                    'recommendation': sca.crows_feet_recommendation
+                },
+                'dark_eye': {
+                    'score': {
+                        'overall': sca.dark_eye_overall
+                    },
+                    'recommendation': sca.dark_eye_recommendation
+                },
+                'sallowness': {
+                    'score': {
+                        'overall': sca.sallowness_overall,
+                    },
+                    'recommendation': sca.sallowness_recommendation
+                }
             },
-            'wrinkles': {
-                'score': {
-                    'overall': sca.wrinkles_overall,
-                    'fh': sca.wrinkles_fh,
-                    'rnl': sca.wrinkles_rnl,
-                    'lnl': sca.wrinkles_lnl,
-                    'rbe': sca.wrinkles_rbe,
-                    'lbe': sca.wrinkles_lbe
-                },
-                "image": {
-                    "fh": url + identifier + '_wrinkles_fh_image.jpg',
-                    "rnl": url + identifier + '_wrinkles_rnl_image.jpg',
-                    "lnl": url + identifier + '_wrinkles_lnl_image.jpg',
-                    "rbe": url + identifier + '_wrinkles_rbe_image.jpg',
-                    "lbe": url + identifier + '_wrinkles_lbe_image.jpg'
-                },
-            },
-            'crows_feet': {
-                'score': {
-                    'overall': sca.crows_feet_overall,
-                    'r': sca.crows_feet_r,
-                    'l': sca.crows_feet_l
-                },
-                "image": {
-                    "r": url + identifier + '_crows_feet_r_image.jpg',
-                    "l": url + identifier + '_crows_feet_l_image.jpg'
-                },
-                'recommendation': sca.crows_feet_recommendation
-            },
-            'dark_eye': {
-                'score': {
-                    'overall': sca.dark_eye_overall
-                },
-                'recommendation': sca.dark_eye_recommendation
-            },
-            'sallowness': {
-                'score': {
-                    'overall': sca.sallowness_overall,
-                },
-                'recommendation': sca.sallowness_recommendation
-            }
+            'concerns': sca.concerns
         }
     }
 
 
-@application.route('/image')
+@app.route('/image')
 def get_image():
     filename = request.args.get('file')
     path = './web_dir_test/' + filename
@@ -134,4 +137,4 @@ def get_image():
 
 
 if __name__ == '__main__':
-    application.run(debug=False)
+    app.run(debug=False)
