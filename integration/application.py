@@ -61,7 +61,7 @@ def skincare_advice():
     sca = SkinCareAdvisor(user_input, image)
 
     identifier = str(sca.identifier)
-    url = "http://0c7f5315.ngrok.io/image?file="
+    url = "http://139.162.62.89:5000/image?file="
 
     return {
         'statusCode': 200,
