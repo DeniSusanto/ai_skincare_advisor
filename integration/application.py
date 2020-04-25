@@ -60,7 +60,7 @@ def skincare_advice():
     sca = SkinCareAdvisor(questionnaire, image)
 
     identifier = str(sca.identifier)
-    url = "http://139.162.62.89:5000/image?file="
+    url = "http://10.0.2.2:5000/image?file="
 
     return {
         'statusCode': 200,
@@ -68,7 +68,7 @@ def skincare_advice():
             'full_image': url + identifier + '_full_image.jpg',
             'full_recommendations': sca.full_recommendations,
             'issues': {
-                'acne': {
+                'Acne': {
                     'score': {
                         'overall': sca.acne_overall,
                         'fh': sca.acne_fh,
@@ -81,7 +81,7 @@ def skincare_advice():
                     },
                     'recommendation': sca.acne_recommendation
                 },
-                'wrinkles': {
+                'Wrinkles': {
                     'score': {
                         'overall': sca.wrinkles_overall,
                         'fh': sca.wrinkles_fh,
@@ -92,7 +92,7 @@ def skincare_advice():
                     },
                     'recommendation': sca.wrinkles_recommendation
                 },
-                'crows_feet': {
+                "Crow's Feet": {
                     'score': {
                         'overall': sca.crows_feet_overall,
                         'r': sca.crows_feet_r,
@@ -100,13 +100,13 @@ def skincare_advice():
                     },
                     'recommendation': sca.crows_feet_recommendation
                 },
-                'dark_eye': {
+                'Dark Eye Circle': {
                     'score': {
                         'overall': sca.dark_eye_overall
                     },
                     'recommendation': sca.dark_eye_recommendation
                 },
-                'sallowness': {
+                'Sallowness': {
                     'score': {
                         'overall': sca.sallowness_overall,
                     },
