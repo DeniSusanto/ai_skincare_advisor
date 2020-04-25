@@ -60,7 +60,7 @@ def skincare_advice():
     sca = SkinCareAdvisor(questionnaire, image)
 
     identifier = str(sca.identifier)
-    url = "http://10.0.2.2:5000/image?file="
+    url = "http://139.162.62.89:5000/image?file="
 
     return {
         'statusCode': 200,
