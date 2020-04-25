@@ -19,6 +19,45 @@ import base64
 import numpy as np
 from PIL import Image
 import io
+import pickle
+
+#major integration
+import dlib
+from wide_resnet import WideResNet
+import os
+from cntk import load_model, combine
+
+#prod_cat
+PRODUCT_CATALOGUE_CSV_PATH = config.PRODUCT_CATALOGUE_CSV_PATH
+prod_cat = pd.read_csv(PRODUCT_CATALOGUE_CSV_PATH)
+
+#facial_landmark
+F_L_PREDICTOR_PATH = config.F_L_PREDICTOR_PATH
+detector = dlib.get_frontal_face_detector()
+predictor = dlib.shape_predictor(F_L_PREDICTOR_PATH)
+
+#age_gender
+A_G_MODEL_PATH = config.A_G_MODEL_PATH
+ag_model = WideResNet(64)()
+ag_model.load_weights(A_G_MODEL_PATH)
+
+#dark_eye
+D_E_MODEL_PATH = config.D_E_MODEL_PATH
+with open(D_E_MODEL_PATH, 'rb') as f:
+    de_model = pickle.load(f)
+
+#acne
+ACNE_PRETRAINED_MODEL_NAME = config.ACNE_PRETRAINED_MODEL_NAME
+ACNE_PRETRAINED_MODEL_PATH = config.ACNE_PRETRAINED_MODEL_PATH
+ACNE_PRETRAINED_NODE_NAME = config.ACNE_PRETRAINED_NODE_NAME
+ACNE_REGRESSION_MODEL_PATH = config.ACNE_REGRESSION_MODEL_PATH
+model_file  = os.path.join(ACNE_PRETRAINED_MODEL_PATH, ACNE_PRETRAINED_MODEL_NAME)
+ac_loaded_model  = load_model(model_file)
+node_in_graph = ac_loaded_model.find_by_name(ACNE_PRETRAINED_NODE_NAME)
+ac_output_nodes  = combine([node_in_graph.owner])
+read_model = pd.read_pickle(ACNE_REGRESSION_MODEL_PATH)
+regression_model = read_model['model'][0]
+ac_train_regression = pickle.loads(regression_model)
 
 # PLEASE SET THINGS IN CONFIG.PY
 PRODUCT_CATALOGUE_CSV_PATH = config.PRODUCT_CATALOGUE_CSV_PATH
@@ -57,10 +96,10 @@ def skincare_advice():
     img_string = request.form['image']
     image = toRGB(stringToImage(img_string))
     questionnaire = json.loads(request.form['questionnaire'])
-    sca = SkinCareAdvisor(questionnaire, image)
+    sca = SkinCareAdvisor(questionnaire, image, detector, predictor, prod_cat, ag_model, de_model, ac_loaded_model, ac_output_nodes, ac_train_regression)
 
     identifier = str(sca.identifier)
-    url = "http://139.162.62.89:5000/image?file="
+    url = "http://10.0.2.2:5000/image?file="
 
     return {
         'statusCode': 200,

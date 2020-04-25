@@ -10,7 +10,7 @@ D_E_WIDTH_RESCALE = config.D_E_WIDTH_RESCALE
 H_SPLIT_COEFF = config.H_SPLIT_COEFF
 W_SPLIT_COEFF = config.W_SPLIT_COEFF
 N_TOP_SELECT = config.N_TOP_SELECT
-D_E_MODEL_PATH = config.D_E_MODEL_PATH
+
 
 def split(x, n): 
     split = []
@@ -34,11 +34,10 @@ def split(x, n):
 
 
 class DarkEyeDetector():
-    def __init__(self, facial_landmark):
+    def __init__(self, facial_landmark, model):
         self.facial_landmark = facial_landmark
         self.image = facial_landmark.image
-        with open(D_E_MODEL_PATH, 'rb') as f:
-            self.score_model = pickle.load(f)
+        self.score_model = model
     
     #[[RGB_sum, r, g, b]]
     def _custom_data_structure(self, img, y1, y2, x1, x2):

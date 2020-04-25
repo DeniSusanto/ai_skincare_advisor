@@ -10,14 +10,10 @@ import cv2
 import numpy as np
 import config
 
-F_L_PREDICTOR_PATH = config.F_L_PREDICTOR_PATH
 FL_WIDTH_RESIZE = config.FL_WIDTH_RESIZE
 
 class FacialLandmark():
-    def __init__(self, image):
-        detector = dlib.get_frontal_face_detector()
-        predictor = dlib.shape_predictor(F_L_PREDICTOR_PATH)
-        
+    def __init__(self, image, detector, predictor):
         (ori_height, ori_width) = image.shape[:2]
         resized_image = imutils.resize(image, width=FL_WIDTH_RESIZE)
         (trans_height, trans_width) = resized_image.shape[:2]

@@ -8,30 +8,21 @@ import cv2
 import os
 import pandas as pd
 import pickle
-from cntk import load_model, combine
 import config
 
 #config variables
-ACNE_PRETRAINED_MODEL_NAME = config.ACNE_PRETRAINED_MODEL_NAME
-ACNE_PRETRAINED_MODEL_PATH = config.ACNE_PRETRAINED_MODEL_PATH
-ACNE_PRETRAINED_NODE_NAME = config.ACNE_PRETRAINED_NODE_NAME
-ACNE_REGRESSION_MODEL_PATH = config.ACNE_REGRESSION_MODEL_PATH
+
 ACNE_IMAGE_HEIGHT = config.ACNE_IMAGE_HEIGHT
 ACNE_IMAGE_WIDTH  = config.ACNE_IMAGE_WIDTH
 
 #a class for detecting acne
 class AcneDetector():
-    def __init__(self, facial_landmark):
+    def __init__(self, facial_landmark, loaded_model, output_nodes, train_regression):
         self.facial_landmark = facial_landmark
         self.image = facial_landmark.image.copy()
-        model_file  = os.path.join(ACNE_PRETRAINED_MODEL_PATH, ACNE_PRETRAINED_MODEL_NAME)
-        self.loaded_model  = load_model(model_file)
-        node_in_graph = self.loaded_model.find_by_name(ACNE_PRETRAINED_NODE_NAME)
-        self.output_nodes  = combine([node_in_graph.owner])
-
-        read_model = pd.read_pickle(ACNE_REGRESSION_MODEL_PATH)
-        regression_model = read_model['model'][0]
-        self.train_regression = pickle.loads(regression_model)
+        self.loaded_model  = loaded_model
+        self.output_nodes  = output_nodes
+        self.train_regression = train_regression
         
         fh_region = self.facial_landmark.get_forehead_region()
         fh_score = self._predict_score(fh_region)

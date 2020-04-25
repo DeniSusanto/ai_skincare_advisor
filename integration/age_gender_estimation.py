@@ -1,18 +1,14 @@
-from wide_resnet import WideResNet
 import imutils
 import numpy as np
 import cv2
 import tensorflow as tf
 import config
 
-A_G_MODEL_PATH = config.A_G_MODEL_PATH
+
 MARGIN = config.MARGIN
 
 class AgeGenderEstimator():
-    def __init__(self, facial_landmark):
-        model = WideResNet(64)()
-        model.load_weights(A_G_MODEL_PATH)
-        
+    def __init__(self, facial_landmark, model):
         self.model = model
         self.facial_landmark = facial_landmark
         self.image = facial_landmark.image.copy()

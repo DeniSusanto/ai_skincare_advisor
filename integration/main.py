@@ -14,8 +14,8 @@ import time
 import imutils
 import cv2
 
+
 #PLEASE SET THINGS IN CONFIG.PY
-PRODUCT_CATALOGUE_CSV_PATH = config.PRODUCT_CATALOGUE_CSV_PATH
 WEB_DIR = config.WEB_DIR
 WEB_ADDRESS = config.WEB_ADDRESS
 MAIN_IMAGE_WIDTH = config.MAIN_IMAGE_WIDTH
@@ -47,16 +47,16 @@ def saveImage(image, file_name, prefix,  directory = WEB_DIR, address = WEB_ADDR
 
 #questionnaire should have these keys: age, skin_type, allergies, price, concerns, preferences 
 class SkinCareAdvisor():
-    def __init__(self, questionnaire, image, identifier=None):
+    def __init__(self, questionnaire, image, detector, predictor, prod_cat, ag_model, de_model, ac_loaded_model, ac_output_nodes, ac_train_regression, identifier=None):
         if not identifier:
             identifier = random.getrandbits(64)
         self.identifier = identifier
-        self.prod_cat = pd.read_csv(PRODUCT_CATALOGUE_CSV_PATH)
-        facial_landmark = FacialLandmark(image)
+        self.prod_cat = prod_cat
+        facial_landmark = FacialLandmark(image, detector, predictor)
         
-        age_gender = AgeGenderEstimator(facial_landmark)
-        dark_eyes = DarkEyeDetector(facial_landmark)
-        acne = AcneDetector(facial_landmark)
+        age_gender = AgeGenderEstimator(facial_landmark, ag_model)
+        dark_eyes = DarkEyeDetector(facial_landmark, de_model)
+        acne = AcneDetector(facial_landmark, ac_loaded_model, ac_output_nodes, ac_train_regression)
         wrinkles = WrinklesDetector(facial_landmark)
         wrinkles.complete_init()
         
