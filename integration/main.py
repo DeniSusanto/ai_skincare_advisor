@@ -69,6 +69,7 @@ class SkinCareAdvisor():
         self.acne_rc = standardize_score(acne_cheek_score[0], MAX_ACNE_SCORE)
         self.acne_lc = standardize_score(acne_cheek_score[1], MAX_ACNE_SCORE)
         self.acne_ch = standardize_score(acne.get_chin_score(), MAX_ACNE_SCORE)
+        acne_adjusted_score = np.max([self.acne_overall, self.acne_rc, self.acne_lc, self.acne_ch])
         
         #wrinkles
         wrinkles_overall = wrinkles.overall_score
@@ -116,7 +117,7 @@ class SkinCareAdvisor():
         
         #Take care of the recommendation
         main_input = {
-            'acne': acne_overall,
+            'acne': acne_adjusted_score,
             'wrinkles': wrinkles_overall,
             'crows_feet': crows_feet_overall,
             'dark_eye': dark_eye_overall,

@@ -6,7 +6,6 @@ from sklearn.linear_model import LinearRegression
 import imutils
 import config
 
-D_E_WIDTH_RESCALE = config.D_E_WIDTH_RESCALE
 H_SPLIT_COEFF = config.H_SPLIT_COEFF
 W_SPLIT_COEFF = config.W_SPLIT_COEFF
 N_TOP_SELECT = config.N_TOP_SELECT
@@ -75,10 +74,11 @@ class DarkEyeDetector():
 
     def get_skin_tone(self):
         #utilizes forehead region for getting overall face color
-        forehead_region = self.facial_landmark.get_forehead_region()
-        forehead_region = imutils.resize(forehead_region, width = D_E_WIDTH_RESCALE)
-        skin_tone = get_skin_tone_RGB(forehead_region)
-        return skin_tone
+        b_ber = self.facial_landmark.get_below_ber()
+        b_ber_r, b_ber_l = b_ber[0], b_ber[1]
+        skin_tone_r = self._calculate_adjusted_dark_tone(b_ber_r)
+        skin_tone_l = self._calculate_adjusted_dark_tone(b_ber_l)
+        return (skin_tone_r, skin_tone_l)
     
     #return right and left tone in RGB
     def get_dark_eyes(self, darkest_only = False):
@@ -94,22 +94,29 @@ class DarkEyeDetector():
                 return l_tone
         return (r_tone, l_tone)
     
-    def get_score(self):
-        face_tone = self.get_skin_tone()
-        eye_tone = self.get_dark_eyes(darkest_only = True)
-        dat = []
-        for color in face_tone:
-            dat.append(color)
-        for color in eye_tone:
-            dat.append(color)
-        for i in range(3):
-            diff = (face_tone[i] - eye_tone[i]) * 100 / face_tone[i]
-            dat.append(diff)
-        x = np.asarray([dat])
-        pred = self.score_model.predict(x)
-        pred[pred<0] = 0
-        score = pred[0]
-        return score
+    def get_score(self, get_overall = True):
+        face_tones = self.get_skin_tone()
+        eye_tones = self.get_dark_eyes()
+        scores = []
+        for i in range(2):
+            dat = []
+            face_tone = face_tones[i]
+            eye_tone = eye_tones[i]
+            for color in face_tone:
+                dat.append(color)
+            for color in eye_tone:
+                dat.append(color)
+            for i in range(3):
+                diff = (face_tone[i] - eye_tone[i]) * 100 / face_tone[i]
+                dat.append(diff)
+            x = np.asarray([dat])
+            pred = self.score_model.predict(x)
+            pred[pred<0] = 0
+            score = pred[0]
+            scores.append(score)
+        if get_overall:
+            return np.mean(scores)
+        return scores
         
     
     

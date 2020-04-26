@@ -55,12 +55,33 @@ class FacialLandmark():
         r_x1 = self.landmark[36][0] - int(0.15 * (self.landmark[36][0] - self.landmark[0][0]))
         r_x2 = self.landmark[39][0]
         r_y1 = right_eye_lp
-        r_y2 = right_eye_lp + int(1.2 * right_eye_h)
+        r_y2 = right_eye_lp + int(1 * right_eye_h)
         
         l_x1 = self.landmark[42][0]
         l_x2 = self.landmark[45][0] + int(0.15 * (self.landmark[16][0] - self.landmark[45][0]))
         l_y1 = left_eye_lp
-        l_y2 = left_eye_lp + int(1.2 * left_eye_h)
+        l_y2 = left_eye_lp + int(1 * left_eye_h)
+        
+        if coor:
+            return ((self._returnImage(r_x1, r_x2, r_y1, r_y2, highlight), (r_x1, r_x2, r_y1, r_y2) ), (self._returnImage(l_x1, l_x2, l_y1, l_y2, highlight), (l_x1, l_x2, l_y1, l_y2)))
+        
+        return (self._returnImage(r_x1, r_x2, r_y1, r_y2, highlight), self._returnImage(l_x1, l_x2, l_y1, l_y2, highlight))
+    
+    def get_below_ber(self, highlight = False, coor = False):
+        right_eye_h = round(1.2*(self.landmark[41][1] - self.landmark[37][1]))
+        left_eye_h = round(1.2*(self.landmark[46][1] - self.landmark[44][1]))
+        right_eye_lp = int(max(self.landmark[41][1], self.landmark[40][1]) + 0.5 * right_eye_h)
+        left_eye_lp = int(max(self.landmark[46][1], self.landmark[47][1]) + 0.5 * left_eye_h)
+        
+        r_x1 = self.landmark[36][0] - int(0.15 * (self.landmark[36][0] - self.landmark[0][0]))
+        r_x2 = self.landmark[39][0] - int(0.15 * (self.landmark[36][0] - self.landmark[0][0]))
+        r_y1 = right_eye_lp + int(1.3 * right_eye_h)
+        r_y2 = right_eye_lp + int(2.6 * right_eye_h)
+        
+        l_x1 = self.landmark[42][0] + int(0.15 * (self.landmark[16][0] - self.landmark[45][0]))
+        l_x2 = self.landmark[45][0] + int(0.15 * (self.landmark[16][0] - self.landmark[45][0]))
+        l_y1 = left_eye_lp + int(1.3 * left_eye_h)
+        l_y2 = left_eye_lp + int(2.6 * left_eye_h)
         
         if coor:
             return ((self._returnImage(r_x1, r_x2, r_y1, r_y2, highlight), (r_x1, r_x2, r_y1, r_y2) ), (self._returnImage(l_x1, l_x2, l_y1, l_y2, highlight), (l_x1, l_x2, l_y1, l_y2)))

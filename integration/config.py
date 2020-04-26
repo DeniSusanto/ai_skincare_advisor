@@ -43,10 +43,9 @@ YCRCB_MIN_2 = 90
 YCRCB_MAX_2 = 130
 
 #dark eye detection
-D_E_WIDTH_RESCALE = 500
 H_SPLIT_COEFF = 4
 W_SPLIT_COEFF = 6
-N_TOP_SELECT = int(round((H_SPLIT_COEFF * W_SPLIT_COEFF)/3))
+N_TOP_SELECT = int(round(0.25*(H_SPLIT_COEFF * W_SPLIT_COEFF)))
 D_E_MODEL_PATH = "./models/dark_eye_detection_model.pickle"
 
 #wrinkles detection
