@@ -100,7 +100,7 @@ def skincare_advice():
 
     identifier = str(sca.identifier)
     url = "http://10.0.2.2:5000/image?file="
-
+#     print("Sending response")
     return {
         'statusCode': 200,
         'body': {

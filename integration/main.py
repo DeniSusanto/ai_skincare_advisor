@@ -13,7 +13,7 @@ import random
 import time
 import imutils
 import cv2
-
+import numpy as np
 
 #PLEASE SET THINGS IN CONFIG.PY
 WEB_DIR = config.WEB_DIR
@@ -79,6 +79,7 @@ class SkinCareAdvisor():
         self.wrinkles_lnl = standardize_score(wrinkles.l_nl_score, MAX_WRINKLES_SCORE)
         self.wrinkles_rbe = standardize_score(wrinkles.r_be_score, MAX_WRINKLES_SCORE)
         self.wrinkles_lbe = standardize_score(wrinkles.l_be_score, MAX_WRINKLES_SCORE)
+        wrinkles_adjusted_score = np.max([self.wrinkles_overall, self.wrinkles_fh, self.wrinkles_rnl, self.wrinkles_lnl, self.wrinkles_rbe, self.wrinkles_lbe])
         
         #crows feet
         crows_feet_overall = wrinkles.cf_score
@@ -116,17 +117,19 @@ class SkinCareAdvisor():
 #         self.crows_feet_l_image = saveImage(wrinkles.l_cf_image, "crows_feet_l_image.jpg", self.identifier)
         
         #Take care of the recommendation
+        allergy = None if questionnaire['allergies']=="" else questionnaire['allergies'].lower().replace(" ", "").split(",")
+        pref = None if questionnaire['preferences']=="" else questionnaire['preferences'].lower().replace(" ", "").split(",")
         main_input = {
             'acne': acne_adjusted_score,
-            'wrinkles': wrinkles_overall,
+            'wrinkles': wrinkles_adjusted_score,
             'crows_feet': crows_feet_overall,
             'dark_eye': dark_eye_overall,
             'sallowness': sallowness_overall,
             'skin_type': questionnaire['skin_type'],
-            'allergies': questionnaire['allergies'],
+            'allergies': allergy,
             'price': questionnaire['price'],
             'concerns': questionnaire['concerns'],
-            'preferences': questionnaire['preferences']
+            'preferences': pref
         }
         prod_rec = ProductRecommendation(self.prod_cat, main_input)
         recom_object = prod_rec.get_default_recommendation()

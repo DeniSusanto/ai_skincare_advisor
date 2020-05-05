@@ -89,10 +89,10 @@ CONCERNS_NAME_MAPPING = {
 }
 PRODUCT_CATALOGUE_PATH = "product_catalogue.csv"
 RECOMMENDATION_THRESHOLD = {
-    'acne' : 2.0, 
-    'wrinkles' : 2.0, 
-    'crows_feet' : 2.0, 
-    'dark_eye' : 1.0, 
+    'acne' : 1.5, 
+    'wrinkles' : 1.5, 
+    'crows_feet' : 1.5, 
+    'dark_eye' : 0.7, 
     'sallowness' : 1.0
 }
 RECOMMENDATION_PRODUCT_MAPPING = {
