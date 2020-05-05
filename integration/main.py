@@ -7,6 +7,7 @@ from recommendation_system import ProductRecommendation
 from sallowness_detection import get_sallowness_score
 from os.path import join
 import pandas as pd
+import numpy as np
 import config
 import json
 import random
